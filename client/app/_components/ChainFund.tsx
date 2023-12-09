@@ -1,5 +1,5 @@
-import Image from "next/image";
-import React from "react";
+import Image from 'next/image';
+import React from 'react';
 
 const ChainFund = ({ chain, bgCol }: any) => {
   return (
@@ -26,4 +26,4 @@ const ChainFund = ({ chain, bgCol }: any) => {
 
 export default ChainFund;
 
-const chains = ["base", "celo", "eth", "optimism"];
+const chains = ['base', 'celo', 'eth', 'optimism'];

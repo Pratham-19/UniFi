@@ -1,10 +1,10 @@
-import Navbar from "./Navbar";
-import Footer from "./Footer";
-import ChainFund from "./ChainFund";
-import ChooseChain from "./ChooseChain";
-import ChainSubtotal from "./ChainSubtotal";
-import NotifTransact from "./NotifTransact";
-import Nft from "./Nft";
+import Navbar from './Navbar';
+import Footer from './Footer';
+import ChainFund from './ChainFund';
+import ChooseChain from './ChooseChain';
+import ChainSubtotal from './ChainSubtotal';
+import NotifTransact from './NotifTransact';
+import Nft from './Nft';
 export {
   Navbar,
   Footer,
@@ -12,5 +12,5 @@ export {
   ChooseChain,
   ChainSubtotal,
   NotifTransact,
-  Nft,
+  Nft
 };

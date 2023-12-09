@@ -1,9 +1,33 @@
-import React from 'react';
+'use client';
+import React, { useState } from 'react';
 import { chains } from '@/app/_lib/constants';
 import { ChainFund, ChooseChain, ChainSubtotal } from '../../_components';
 import Image from 'next/image';
+import {
+  GetAddressFromEns,
+  GetAddressFromLens,
+  GetENSFromAddress
+} from '@/app/_lib/airstack_queries';
+import { init, useQuery } from '@airstack/airstack-react';
+init(process.env.NEXT_PUBLIC_AIRSTACK_API_KEY ?? '');
 
 const DashboardPage = () => {
+  const [recipient, setRecipient] = useState('');
+  const [network, setNetwork] = useState('');
+  const [amount, setAmount] = useState('');
+
+  // ens TO ADD
+  // const { data, loading, error } = useQuery(GetAddressFromEns, {
+  //   name: 'lucifer0x17.eth'
+  // });
+  // const address = data.Domain.resolvedAddress;
+
+  // lens to Add
+  // const { data, loading, error } = useQuery(GetAddressFromLens, {
+  //   lensHandle: 'lucifer0x17.lens'
+  // });
+  // const address = data.Socials.Social[0].userAddress;
+
   return (
     <>
       <div className="z-0 w-[100vw] flex flex-col bg-[linear-gradient(299deg,_#FFFCEA_0%,_#FFF8D4_0.01%,_#F8FCFF_100%)]">
@@ -81,6 +105,9 @@ const DashboardPage = () => {
             <div className="w-[100%] grid gap-2">
               <h3 className="text-start text-[21px]">Type Recipient</h3>
               <input
+                onChange={(e) => {
+                  setRecipient(e.target.value);
+                }}
                 type="text"
                 placeholder="Type address or ens or lens"
                 className="p-[10px] bg-[#f1f1f1] text-start text-[21px] rounded-[8px] border-[1px] border-solid border-[#BDCFD0]"
@@ -104,6 +131,9 @@ const DashboardPage = () => {
                     type="text"
                     placeholder="Type amount"
                     className="w-[100%] h-[100%] p-[10px] rounded-[12xp]"
+                    onChange={(e) => {
+                      setAmount(e.target.value);
+                    }}
                   />
                   <select name="dropdown" className="">
                     <option value={'usdc'}>USDC</option>

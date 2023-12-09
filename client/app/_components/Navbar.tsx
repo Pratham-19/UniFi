@@ -4,7 +4,8 @@ import React, { useState } from 'react';
 import { NotifTransact } from '.';
 
 const Navbar = () => {
-  const currentPage = window.location.pathname;
+  const currentPage = window.location.pathname.split('/')[1];
+  console.log(currentPage);
   const [notifClicked, setNotifClicked] = useState(false);
   console.log(currentPage);
   return (
@@ -21,7 +22,9 @@ const Navbar = () => {
         <h2 className="text-[39px] self-center place-self-center">UNIFY</h2>
       </div>
       {/* nav name notif */}
-      {currentPage != '/' && (
+      {(currentPage == '/dashboard' ||
+        currentPage == '/mynfts' ||
+        currentPage == '/chat') && (
         <div className="grid grid-flow-col gap-8 self-center place-self-end">
           {/* nav items */}
           <div className="grid grid-flow-col self-center place-self-center pl-8 gap-8">
@@ -35,7 +38,7 @@ const Navbar = () => {
             </h3>
             <h3
               className={`text-[21px] hover:border-b-2 hover:font-semibold hover:cursor-pointer ${
-                currentPage == '/home' ? 'border-b-2' : ''
+                currentPage == '/dashboard' ? 'border-b-2' : ''
               } border-solid border-[#1c1b1f]`}
             >
               Transfer
@@ -111,10 +114,19 @@ const Navbar = () => {
           </div>
         </div>
       )}
-      {currentPage == '/' && (
-        <button className="text-[32px] bg-[#48637C] text-[#ffffff] hover:shadow-[0px_6px_0px_0px_#091D31] h-fit w-fit rounded-[8px] px-8 py-2 flex gap-4 justify-center border-[1px] border-solid border-[#091D31]">
+      {currentPage == '' && (
+        <button className="text-[21px] font-normal bg-[#48637C] text-[#ffffff] hover:shadow-[0px_6px_0px_0px_#091D31] h-fit w-fit rounded-[8px] px-8 py-2 flex gap-4 justify-center border-[1px] border-solid border-[#091D31] z-50">
           Start transferring
         </button>
+      )}
+      {(currentPage == 'login' ||
+        currentPage == 'create' ||
+        currentPage == 'getStarted' ||
+        currentPage == 'loader') && (
+        <div className="flex gap-2 items-center">
+          <div className="bg-[#777777] rounded-full p-4"></div>
+          <h4 className="text-[18px]">0xjd...s4d</h4>
+        </div>
       )}
     </div>
   );

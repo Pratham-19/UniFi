@@ -5,7 +5,6 @@ import Link from 'next/link';
 export default function Home() {
   return (
     <div className="w-[100vw] bg-[linear-gradient(299deg,_#FFFCEA_0%,_#FFF8D4_0.01%,_#F8FCFF_100%)] flex flex-col items-center justify-center">
-      <Navbar />
       <Image
         src={'/mainLanding/landing-nettop.png'}
         width={1200}

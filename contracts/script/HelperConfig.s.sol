@@ -20,7 +20,7 @@ contract HelperConfig is Script {
 
     uint64 public constant SEPOLIA_DESTINATION_SELECTOR = 16015286601757825753;
     uint64 public constant MUMBAI_DESTINATION_SELECTOR = 12532609583862916517;
-    uint256 public constant CCIP_GAS_LIMIT = 6_000_000;
+    uint256 public constant CCIP_GAS_LIMIT = 2_000_000;
     bool public constant CCIP_STRICT = false;
 
     uint256[] public supportedChainIds = [11155111, 80001];
@@ -70,7 +70,7 @@ contract HelperConfig is Script {
     }
 
     function getChainlinkCCIPAddress() external pure returns (address) {
-        return 0x61461f8801090320723cc3a90466e0910f2f7A30;
+        return 0x7746B5e3232C514be10e7D47De9b579Df65BB23d;
     }
 
     function getUtilsAddress() external pure returns (address) {

@@ -138,7 +138,7 @@ contract MainContractDeployer is CCIPReceiver {
             uint256 toolUsed = s_toolsUsed[chainId];
             if (chainId == block.chainid) {
                 _createMainContractOnSameChain(_salt);
-            } else if (toolUsed == 0) {
+            } else if (block.chainid != chainId && toolUsed == 0) {
                 _createMainContractOnDifferentChainUsingChainlink(_salt, chainId);
             }
             unchecked {
@@ -175,7 +175,7 @@ contract MainContractDeployer is CCIPReceiver {
      * This function deploys the MainContract on the same chain as the MainContractDeployer.
      * @param _salt The salt to use for the CREATE3 call
      */
-    function _createMainContractOnSameChain(bytes32 _salt) internal {
+    function _createMainContractOnSameChain(bytes32 _salt) public {
         _createMainContract(_salt);
     }
 
@@ -192,10 +192,10 @@ contract MainContractDeployer is CCIPReceiver {
      * This function deploys the MainContract on the same chain as the MainContractDeployer.
      * @param _salt The salt to use for the CREATE3 call
      */
-    function _createMainContract(bytes32 _salt) internal {
+    function _createMainContract(bytes32 _salt) public {
         bytes memory bytecode = abi.encodePacked(
             type(MainContract).creationCode,
-            abi.encode(i__router, i__usdc, i__treasury) // Encoding constructor parameters
+            abi.encode(i__router, i__usdc, address(this), i__treasury) // Encoding constructor parameters
         );
 
         address mainContractAddress = CREATE3.deploy(_salt, bytecode, 0);
@@ -213,7 +213,7 @@ contract MainContractDeployer is CCIPReceiver {
     function _createMainContractWithMessageId(bytes32 _salt, bytes32 _messageId) internal {
         bytes memory bytecode = abi.encodePacked(
             type(MainContract).creationCode,
-            abi.encode(i__router, i__usdc, i__treasury) // Encoding constructor parameters
+            abi.encode(i__router, i__usdc, address(this), i__treasury) // Encoding constructor parameters
         );
 
         address mainContractAddress = CREATE3.deploy(_salt, bytecode, 0);

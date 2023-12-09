@@ -26,6 +26,7 @@ pragma solidity 0.8.19;
 
 import {Client} from "@chainlink/contracts-ccip/src/v0.8/ccip/libraries/Client.sol";
 import {IRouterClient} from "@chainlink/contracts-ccip/src/v0.8/ccip/interfaces/IRouterClient.sol";
+import {IERC20} from "@openzeppelin/contracts/token/ERC20/IERC20.sol";
 
 import {Utils} from "../Utils.sol";
 import {MainContract} from "../MainContract.sol";
@@ -39,6 +40,9 @@ contract ChainlinkCCIP {
     */
     error ChainlinkCCIP__InvalidAddress();
     error ChainlinkCCIP__NotWhitelisted();
+    error ChainlinkCCIP__NotEnoughTokens();
+    error ChainlinkCCIP__NothingToWithdraw();
+    error ChainlinkCCIP__FailedToWithdrawEth(address _from, address _to, uint256 _amount);
 
     /*
                             _
@@ -125,9 +129,10 @@ contract ChainlinkCCIP {
             data: messageData,
             tokenAmounts: new Client.EVMTokenAmount[](0),
             extraArgs: "",
-            feeToken: i_link
+            feeToken: address(0)
         });
         uint256 fee = IRouterClient(i_router).getFee(destinationChainSelector, message);
+        if (fee > address(this).balance) revert ChainlinkCCIP__NotEnoughTokens();
 
         bytes32 messageId = IRouterClient(i_router).ccipSend{value: fee}(destinationChainSelector, message);
 
@@ -142,13 +147,38 @@ contract ChainlinkCCIP {
             data: messageData,
             tokenAmounts: new Client.EVMTokenAmount[](0),
             extraArgs: Client._argsToBytes(ccipExtraArgs),
-            feeToken: i_link
+            feeToken: address(0)
         });
         uint256 fee = IRouterClient(i_router).getFee(destinationChainSelector, message);
+        if (fee > address(this).balance) revert ChainlinkCCIP__NotEnoughTokens();
 
         bytes32 messageId = IRouterClient(i_router).ccipSend{value: fee}(destinationChainSelector, message);
 
         emit ChainlinkCCIP__RequestSentForCrossChainDeployment(destinationChainSelector, messageId);
+    }
+
+    function withdraw(address _beneficiary) public {
+        // Retrieve the balance of this contract
+        uint256 amount = address(this).balance;
+
+        // Revert if there is nothing to withdraw
+        if (amount == 0) revert ChainlinkCCIP__NothingToWithdraw();
+
+        // Attempt to send the funds, capturing the success status and discarding any return data
+        (bool sent,) = _beneficiary.call{value: amount}("");
+
+        // Revert if the send failed, with information about the attempted transfer
+        if (!sent) revert ChainlinkCCIP__FailedToWithdrawEth(msg.sender, _beneficiary, amount);
+    }
+
+    function withdrawToken(address _token) public {
+        // Retrieve the balance of this contract
+        uint256 amount = IERC20(_token).balanceOf(address(this));
+
+        // Revert if there is nothing to withdraw
+        if (amount == 0) revert ChainlinkCCIP__NothingToWithdraw();
+
+        IERC20(_token).transfer(msg.sender, amount);
     }
 
     receive() external payable {}

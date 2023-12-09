@@ -105,6 +105,12 @@ setToolForChainId:
 deployChainlinkCCIP:
 	@forge script script/DeployChainlinkCCIP.s.sol:DeployChainlinkCCIP $(NETWORK_ARGS)
 
+setUtilsOnCCIP:
+	@forge script script/Interactions.s.sol:SetUtilsOnCCIP $(NETWORK_ARGS)
+
+setCCIPGasLimit:
+	@forge script script/Interactions.s.sol:SetCCIPGasLimit $(NETWORK_ARGS)
+
 setChainlinkCCIPOnDeployer:
 	@forge script script/Interactions.s.sol:SetChainlinkCCIPOnDeployer $(NETWORK_ARGS)
 
@@ -134,6 +140,12 @@ setToolForChainIdOnTestnets:
 
 deployChainlinkCCIPOnTestnets:
 	make deployChainlinkCCIP ARGS="--network mumbai" && make deployChainlinkCCIP ARGS="--network sepolia"
+
+setUtilsOnCCIPOnTestnets:
+	make setUtilsOnCCIP ARGS="--network mumbai" && make setUtilsOnCCIP ARGS="--network sepolia"
+
+setCCIPGasLimitOnTestnets:
+	make setCCIPGasLimit ARGS="--network mumbai" && make setCCIPGasLimit ARGS="--network sepolia"
 
 setChainlinkCCIPOnDeployerOnTestnets:
 	make setChainlinkCCIPOnDeployer ARGS="--network mumbai" && make setChainlinkCCIPOnDeployer ARGS="--network sepolia"

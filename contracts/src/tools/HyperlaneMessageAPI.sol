@@ -33,5 +33,18 @@ contract HyperlaneMessageAPI {
         i_mailbox = _mailbox;
     }
 
-    function sendMoneyOnOtherChain() external {}
+    function sendMoneyOnOtherChain(address _to, uint256 _chainId, uint256 _amount) external {
+        uint32 chainId = uint32(_chainId);
+        bytes32 receiverAddress = addressToBytes32(msg.sender);
+        bytes memory message = abi.encode(_to, _amount);
+
+        uint256 quote = IMailbox(i_mailbox).quoteDispatch(chainId, receiverAddress, message);
+
+        IMailbox(i_mailbox).dispatch{value: quote}(chainId, receiverAddress, message);
+    }
+
+    // converts address to bytes32
+    function addressToBytes32(address _addr) internal pure returns (bytes32) {
+        return bytes32(uint256(uint160(_addr)));
+    }
 }

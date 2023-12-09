@@ -46,7 +46,7 @@ query GetAddressFromLens($lensHandle: Identity!) {
   }
 `;
 
-export const FetchPoapFromAddres = `
+export const FetchPoapFromAddress = `
 query FetchPoapFromAddres($resolvedAddress: Identity) {
     Poaps(input: {filter: {owner: {_eq: $resolvedAddress}}, blockchain: ALL}) {
       Poap {

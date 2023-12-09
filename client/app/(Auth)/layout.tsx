@@ -8,11 +8,5 @@ export default function RootLayout({
 }: {
     children: React.ReactNode;
 }) {
-    return (
-        <div className="w-full h-[100vh] overflow-x-hidden">
-            <AuthNavbar />
-            {children}
-            {/* <Footer /> */}
-        </div>
-    );
+    return <div className="w-full h-[100vh] overflow-x-hidden">{children}</div>;
 }

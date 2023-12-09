@@ -1,24 +1,34 @@
 "use client";
 import Image from "next/image";
 import Link from "next/link";
-import React, { useState, useEffect } from "react";
-import { ethers, BrowserProvider } from "ethers";
+import React, { useState } from "react";
+import { BrowserProvider } from "ethers";
+import AuthNavbar from "@/app/_components/Navbar/LoginNavbar";
+import { useRouter } from "next/navigation";
+import { toast } from "react-hot-toast";
+import { Marcellus } from "next/font/google";
+import { cn } from "@/app/_lib/utils";
+
+const marcellus = Marcellus({ weight: ["400"], subsets: ["latin"] });
 
 declare var window: any;
 
 const GetStartedPage = () => {
-    const [provider, setProvider] = useState({});
-    useEffect(() => {
-        const browserProvider = new BrowserProvider(window.ethereum);
-        setProvider(browserProvider);
-    }, []);
+    const [address, setAddress] = useState("");
+    const router = useRouter();
 
     async function connectWallet() {
         if (window.ethereum) {
             try {
+                toast.loading("Connecting to wallet..", {
+                    id: "connectWallet",
+                });
                 const provider = new BrowserProvider(window.ethereum);
-                const signer = provider.getSigner();
-                console.log(signer);
+                const signer = await provider.getSigner();
+                setAddress(signer?.address);
+                toast.dismiss("connectWallet");
+                toast.success("Connected to wallet");
+                router.push("/create");
             } catch (error) {
                 console.error(error);
             }
@@ -28,6 +38,7 @@ const GetStartedPage = () => {
     }
     return (
         <>
+            <AuthNavbar address={address} />
             <main className="w-screen h-[90vh] bg-[#F1F1F1] grid md:grid-cols-2 grid-flow-row">
                 <div className="md:w-[600px] w-[510px] py-4 flex flex-col justify-center space-y-6 px-[64px] place-self-center">
                     <button
@@ -88,7 +99,6 @@ const GetStartedPage = () => {
                         className="min-h-[96%]"
                     />
                     <div className="grid bg-[#f1f1f133] backdrop-blur-[20px] mt-[-147px] rounded-ee-[32px] p-4">
-                        {/* LOGO NAME */}
                         <div className="flex flex-row justify-center gap-6 self-center">
                             <Image
                                 className="place-self-center self-center"
@@ -97,7 +107,14 @@ const GetStartedPage = () => {
                                 width={100}
                                 height={100}
                             />
-                            <h1 className="text-8xl self-center">UNIFY</h1>
+                            <h1
+                                className={cn(
+                                    "text-8xl self-center",
+                                    marcellus.className
+                                )}
+                            >
+                                UNIFI
+                            </h1>
                         </div>
                         {/* Caption */}
                         <h3 className="self-center place-self-center text-[32px] font-cg_med">

@@ -72,7 +72,6 @@ contract MainContract is CCIPReceiver {
     */
     string public s_password;
     address payable public s_chainlinkCCIP;
-    address public s_chainlinkFunctions;
     uint256[] public s_supportedChainIds;
     mapping(uint256 chainId => uint256 toolIndex) public s_toolsUsed;
 
@@ -111,11 +110,6 @@ contract MainContract is CCIPReceiver {
         emit MainContract__ChainlinkCCIPUpdated(_chainlinkCCIP);
     }
 
-    function setChainlinkFunctions(address _chainlinkFunctions) external {
-        s_chainlinkFunctions = _chainlinkFunctions;
-        emit MainContract__ChainlinkFunctionsUpdated(_chainlinkFunctions);
-    }
-
     function setToolForChainId(uint256 _chainId, uint256 _toolIndex) external {
         s_toolsUsed[_chainId] = _toolIndex;
         s_supportedChainIds.push(_chainId);
@@ -136,7 +130,7 @@ contract MainContract is CCIPReceiver {
      */
     function sendAssets(address _to, uint256[] memory _chainIds, uint256[] memory _amounts) public payable {
         uint256 _chainIdsLength = _chainIds.length;
-        if (_chainIdsLength < 0) revert MainContract__EmptyArray();
+        if (_chainIdsLength <= 0) revert MainContract__EmptyArray();
 
         if (_chainIdsLength == 1 && _chainIds[0] == block.chainid) {
             uint256 _amount = _amounts[0];

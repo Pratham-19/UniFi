@@ -26,7 +26,6 @@ pragma solidity 0.8.19;
 
 import {Treasury} from "./Treasury.sol";
 import {ChainlinkCCIP} from "./tools/ChainlinkCCIP.sol";
-import {ChainlinkFunctions} from "./tools/ChainlinkFunctions.sol";
 
 import {IERC20} from "@openzeppelin/contracts/token/ERC20/IERC20.sol";
 import {CCIPReceiver} from "@chainlink/contracts-ccip/src/v0.8/ccip/applications/CCIPReceiver.sol";
@@ -62,26 +61,7 @@ contract MainContract is CCIPReceiver {
     event MainContract__RequestReceivedForCrossChainTransfer(
         address indexed _to, uint256 indexed _sourceChainSelector, uint256 _amount, bytes32 indexed _messageId
     );
-
-    /*
-       _                          _           _                 _   _
-      | |_ _   _ _ __   ___    __| | ___  ___| | __ _ _ __ __ _| |_(_) ___  _ __
-      | __| | | | '_ \ / _ \  / _` |/ _ \/ __| |/ _` | '__/ _` | __| |/ _ \| '_ \
-      | |_| |_| | |_) |  __/ | (_| |  __/ (__| | (_| | | | (_| | |_| | (_) | | | |
-       \__|\__, | .__/ \___|  \__,_|\___|\___|_|\__,_|_|  \__,_|\__|_|\___/|_| |_|
-           |___/|_|
-    */
-
-    enum TOOL {
-        CHAINLINK,
-        HYPERLANE
-    }
-
-    struct CCIPData {
-        uint256 chainId;
-        uint256 amount;
-        TOOL toolUsed;
-    }
+    event MainContract__UpdatedToolForSupportedChainId();
 
     /*
            _        _                         _       _     _
@@ -93,6 +73,8 @@ contract MainContract is CCIPReceiver {
     string public s_password;
     address payable public s_chainlinkCCIP;
     address public s_chainlinkFunctions;
+    uint256[] public s_supportedChainIds;
+    mapping(uint256 chainId => uint256 toolIndex) public s_toolsUsed;
 
     address public immutable i_usdc;
     address public immutable i_factory;
@@ -133,6 +115,12 @@ contract MainContract is CCIPReceiver {
         s_chainlinkFunctions = _chainlinkFunctions;
         emit MainContract__ChainlinkFunctionsUpdated(_chainlinkFunctions);
     }
+
+    function setToolForChainId(uint256 _chainId, uint256 _toolIndex) external {
+        s_toolsUsed[_chainId] = _toolIndex;
+        s_supportedChainIds.push(_chainId);
+        emit MainContract__UpdatedToolForSupportedChainId();
+    }
     /*
                    _     _ _
        _ __  _   _| |__ | (_) ___
@@ -145,17 +133,16 @@ contract MainContract is CCIPReceiver {
     /**
      * Function to send money to a recipient on multiple chains.
      * @param _to Recipient address
-     * @param _ccipData Array of CCIPData
      */
-    function sendAssets(address _to, CCIPData[] memory _ccipData) public payable {
-        uint256 _ccipDataLength = _ccipData.length;
-        if (_ccipData.length < 0) revert MainContract__EmptyArray();
+    function sendAssets(address _to, uint256[] memory _chainIds, uint256[] memory _amounts) public payable {
+        uint256 _chainIdsLength = _chainIds.length;
+        if (_chainIdsLength < 0) revert MainContract__EmptyArray();
 
-        if (_ccipDataLength == 1 && _ccipData[0].chainId == block.chainid) {
-            uint256 _amount = _ccipData[0].amount;
+        if (_chainIdsLength == 1 && _chainIds[0] == block.chainid) {
+            uint256 _amount = _amounts[0];
             _sendMoneyOnSameChain(_to, _amount);
         } else {
-            _sendMoneyOnOtherChain(_ccipData);
+            _sendMoneyOnOtherChain(_chainIds, _amounts);
         }
     }
 
@@ -190,14 +177,14 @@ contract MainContract is CCIPReceiver {
         emit MainContract__AssetTransferDirectly(_to, _amount);
     }
 
-    function _sendMoneyOnOtherChain(CCIPData[] memory _ccipData) internal {
-        for (uint256 i = 0; i < _ccipData.length;) {
-            uint256 chainId = _ccipData[i].chainId;
-            uint256 amount = _ccipData[i].amount;
-            TOOL toolUsed = _ccipData[i].toolUsed;
+    function _sendMoneyOnOtherChain(uint256[] memory _chainIds, uint256[] memory _amounts) internal {
+        for (uint256 i = 0; i < _chainIds.length;) {
+            uint256 chainId = _chainIds[i];
+            uint256 amount = _amounts[i];
+            uint256 toolIndex = s_toolsUsed[chainId];
             if (chainId == block.chainid) {
                 if (amount > 0) _sendUSDC(i_treasury, amount);
-            } else if (toolUsed == TOOL.CHAINLINK) {
+            } else if (toolIndex == 0) {
                 ChainlinkCCIP(s_chainlinkCCIP).sendMoneyOnOtherChain(i_treasury, chainId, amount);
             }
 
@@ -205,7 +192,6 @@ contract MainContract is CCIPReceiver {
                 i++;
             }
         }
-        ChainlinkFunctions(s_chainlinkFunctions).verifyTxns(new string[](0));
     }
 
     function _sendUSDC(address _to, uint256 _amount) internal {

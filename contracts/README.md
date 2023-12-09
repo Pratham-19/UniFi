@@ -1,66 +1,15 @@
-## Foundry
+# Contract Addresses
 
-**Foundry is a blazing fast, portable and modular toolkit for Ethereum application development written in Rust.**
+BasicUSDC: 0xf80E7ce8166b91b110FE022326AAdDf7085Bf0B9 
+Treasury: 0x39d2220958054404bebDca40bAE70b6e16d615C1 
+Utils: 0xF981f02EDAb3E2EAe03746145b64C85B9eC14Aad 
 
-Foundry consists of:
+MainContractDeployer: 0x89CacFEa8Ac86f75ec5c2e2CE1194a95324138D0 
 
--   **Forge**: Ethereum testing framework (like Truffle, Hardhat and DappTools).
--   **Cast**: Swiss army knife for interacting with EVM smart contracts, sending transactions and getting chain data.
--   **Anvil**: Local Ethereum node, akin to Ganache, Hardhat Network.
--   **Chisel**: Fast, utilitarian, and verbose solidity REPL.
+CCIP Contract: 0x7746B5e3232C514be10e7D47De9b579Df65BB23d
 
-## Documentation
+MainContract: 0x8f536b23B0258e0a4Faf0EF13abED08239852b7d 
 
-https://book.getfoundry.sh/
+Wallet Creation (Mumabi -> Sepolia): https://ccip.chain.link/msg/0x64a7432164e0bca639dcaa10ad005e45440a646318d7278f62935be1aea060ac
 
-## Usage
-
-### Build
-
-```shell
-$ forge build
-```
-
-### Test
-
-```shell
-$ forge test
-```
-
-### Format
-
-```shell
-$ forge fmt
-```
-
-### Gas Snapshots
-
-```shell
-$ forge snapshot
-```
-
-### Anvil
-
-```shell
-$ anvil
-```
-
-### Deploy
-
-```shell
-$ forge script script/Counter.s.sol:CounterScript --rpc-url <your_rpc_url> --private-key <your_private_key>
-```
-
-### Cast
-
-```shell
-$ cast <subcommand>
-```
-
-### Help
-
-```shell
-$ forge --help
-$ anvil --help
-$ cast --help
-```
+[["80001", "1000000000", 0], ["11155111", "1000000000", 0]]

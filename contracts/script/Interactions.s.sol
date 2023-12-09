@@ -111,7 +111,7 @@ contract SetToolForChainId is Script {
  * @notice MANUALLY CHANGGE THE `mainContractDeployer` ADDRESS
  */
 contract StartWalletCreation is Script {
-    bytes32 public salt = 0x736f6d657468696e67206e657700000000000000000000000000000000000000;
+    bytes32 public salt = 0x736f63657468696e67206e657700000000000000000000000000000000000000;
 
     function startWalletCreation(address payable _mainContractDeployer) public {
         MainContractDeployer mainContractDeployer = MainContractDeployer(_mainContractDeployer);
@@ -150,7 +150,7 @@ contract MintUSDCForWallets is Script {
         HelperConfig helperConfig = new HelperConfig();
         (, address usdc,) = helperConfig.activeNetworkConfig();
 
-        address mainContract = 0x226f918823d9F4A2625a3e6367FCd41E924ad97b;
+        address mainContract = helperConfig.getMainContract();
 
         uint256 usdcAmount = 10000 ether;
 
@@ -159,5 +159,32 @@ contract MintUSDCForWallets is Script {
 
     function run() public {
         mintUSDCForWalletsUsingConfigs();
+    }
+}
+
+contract SendMoney is Script {
+    function sendMoney(MainContract _mainContract, address _to, uint256[] memory _chainIds, uint256[] memory _amount)
+        public
+    {
+        vm.startBroadcast();
+        _mainContract.sendAssets(_to, _chainIds, _amount);
+        vm.stopBroadcast();
+    }
+
+    function sendMoneyUsingConfigs() public {
+        HelperConfig helperConfig = new HelperConfig();
+        address _mainWallet = helperConfig.getMainContract();
+
+        MainContract mainContract = MainContract(payable(_mainWallet));
+
+        address _to = helperConfig.getLatestTreasuryContract();
+
+        (uint256[] memory _chainIds, uint256[] memory _amount) = helperConfig.getCCIPDataForTransfer();
+
+        sendMoney(mainContract, _to, _chainIds, _amount);
+    }
+
+    function run() public {
+        sendMoneyUsingConfigs();
     }
 }

@@ -24,6 +24,8 @@ contract HelperConfig is Script {
     bool public constant CCIP_STRICT = false;
 
     uint256[] public supportedChainIds = [11155111, 80001];
+    uint256[] public chainsToTransferFundsOn = [11155111, 80001];
+    uint256[] public amountsToTransfer = [10 ether, 10 ether];
 
     constructor() {
         if (block.chainid == 11155111) {
@@ -49,15 +51,8 @@ contract HelperConfig is Script {
         }
     }
 
-    function getCCIPDataForTransfer() public pure returns (MainContract.CCIPData[] memory) {
-        MainContract.CCIPData[] memory ccipData;
-
-        ccipData[0] = MainContract.CCIPData({chainId: 80001, amount: 10 ether, toolUsed: MainContract.TOOL.HYPERLANE});
-
-        ccipData[1] =
-            MainContract.CCIPData({chainId: 11155111, amount: 10 ether, toolUsed: MainContract.TOOL.CHAINLINK});
-
-        return ccipData;
+    function getCCIPDataForTransfer() public view returns (uint256[] memory _chainIds, uint256[] memory _amounts) {
+        return (chainsToTransferFundsOn, amountsToTransfer);
     }
 
     function getLatestTreasuryContract() external pure returns (address) {
@@ -66,7 +61,7 @@ contract HelperConfig is Script {
     }
 
     function getMainContractDeployer() external pure returns (address payable) {
-        return payable(0x0057D5F962A9fe1b5a71226E221C52D30E3f7A11);
+        return payable(0x89CacFEa8Ac86f75ec5c2e2CE1194a95324138D0);
     }
 
     function getChainlinkCCIPAddress() external pure returns (address) {
@@ -75,6 +70,10 @@ contract HelperConfig is Script {
 
     function getUtilsAddress() external pure returns (address) {
         return 0xF981f02EDAb3E2EAe03746145b64C85B9eC14Aad;
+    }
+
+    function getMainContract() external pure returns (address) {
+        return 0x8f536b23B0258e0a4Faf0EF13abED08239852b7d;
     }
 
     function getSepoliaConfigs() internal pure returns (NetworkConfig memory) {

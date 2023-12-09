@@ -18,7 +18,7 @@ clean  :; forge clean
 # Remove modules
 remove :; rm -rf .gitmodules && rm -rf .git/modules/* && rm -rf lib && touch .gitmodules && git add . && git commit -m "modules"
 
-install :; forge install cyfrin/foundry-devops@0.0.11 --no-commit && forge install foundry-rs/forge-std@v1.5.3 --no-commit && forge install openzeppelin/openzeppelin-contracts@v4.8.2 --no-commit && forge install openzeppelin/openzeppelin-contracts-upgradeable@v4.8.2 --no-commit && npm i
+install :; forge install cyfrin/foundry-devops@0.0.11 --no-commit && forge install foundry-rs/forge-std@v1.5.3 --no-commit && forge install openzeppelin/openzeppelin-contracts@v4.8.2 --no-commit && forge install openzeppelin/openzeppelin-contracts-upgradeable@v4.8.2 --no-commit && forge install vectorized/solady --no-commit && npm i
 
 # Update Dependencies
 update:; forge update

@@ -2,11 +2,10 @@
 import Image from 'next/image';
 import React, { useState } from 'react';
 import { NotifTransact } from '.';
-import { useRouter } from 'next/router';
+import { usePathname } from 'next/navigation';
 
 const Navbar = () => {
-  const router = useRouter();
-  const currentPage = router.pathname;
+  const currentPage = usePathname();
 
   const [notifClicked, setNotifClicked] = useState(false);
 

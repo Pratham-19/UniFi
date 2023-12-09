@@ -20,7 +20,16 @@
     "react": "^18",
     "react-dom": "^18",
     "react-hot-toast": "^2.4.1",
-    "tailwind-merge": "^2.1.0"
+    "tailwind-merge": "^2.1.0",
+    "@safe-global/auth-kit": "^2.0.0",
+    "@safe-global/protocol-kit": "^2.0.0",
+    "@safe-global/relay-kit": "^2.0.0",
+    "@safe-global/safe-core-sdk-types": "^3.0.1",
+    "@web3auth/base": "^4.6.0",
+    "@web3auth/modal": "^4.6.2",
+    "@web3auth/no-modal": "^7.2.0",
+    "@web3auth/openlogin-adapter": "^4.6.0",
+    "@web3auth/safeauth-embed": "^0.0.0"
   },
   "devDependencies": {
     "@types/node": "^20",

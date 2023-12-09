@@ -4,7 +4,7 @@ import React, { useState } from 'react';
 import { NotifTransact } from '.';
 
 const Navbar = () => {
-  const currentPage = window.location.pathname.split('/')[1];
+  const currentPage = "/try"
 
   const [notifClicked, setNotifClicked] = useState(false);
 

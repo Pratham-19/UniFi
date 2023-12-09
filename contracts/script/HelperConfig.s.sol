@@ -23,8 +23,8 @@ contract HelperConfig is Script {
     uint256 public constant CCIP_GAS_LIMIT = 2_000_000;
     bool public constant CCIP_STRICT = false;
 
-    uint256[] public supportedChainIds = [11155111, 80001];
-    uint256[] public chainsToTransferFundsOn = [11155111, 80001];
+    uint256[] public supportedChainIds = [80001, 11155111];
+    uint256[] public chainsToTransferFundsOn = [80001, 11155111];
     uint256[] public amountsToTransfer = [10 ether, 10 ether];
 
     constructor() {
@@ -73,7 +73,7 @@ contract HelperConfig is Script {
     }
 
     function getMainContract() external pure returns (address) {
-        return 0x8f536b23B0258e0a4Faf0EF13abED08239852b7d;
+        return 0x0614267E77EEe72236A91e8e35FbcDF631Abf82d;
     }
 
     function getSepoliaConfigs() internal pure returns (NetworkConfig memory) {

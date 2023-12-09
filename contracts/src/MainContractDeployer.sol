@@ -25,6 +25,7 @@ pragma solidity 0.8.19;
 
 import {CREATE3} from "@solady/contracts/utils/Create3.sol";
 
+import {Utils} from "./Utils.sol";
 import {MainContract} from "./MainContract.sol";
 import {ChainlinkCCIP} from "./tools/ChainlinkCCIP.sol";
 
@@ -58,14 +59,10 @@ contract MainContractDeployer is CCIPReceiver {
     event MainContractDeployer__RequestReceivedForCrossChainDeployment(
         uint64 indexed sourceChainSelector, bytes32 indexed messageId
     );
-    event MainContractDeployer__RequestSentForCrossChainDeployment(
-        uint64 indexed destinationChainSelector, bytes32 indexed messageId
-    );
     event MainContractDeployer__MainContractCreatedWithMessageId(
         address indexed mainContractAddress, bytes32 indexed messageId
     );
     event MainContractDeployer__MainContractCreated(address indexed mainContractAddress);
-    event MainContractDeployer__UpdatedToolForSupportedChainId();
 
     /*
            _        _                         _       _     _
@@ -76,6 +73,8 @@ contract MainContractDeployer is CCIPReceiver {
     */
 
     address payable public s_chainlinkCCIP;
+    address public s_utils;
+
     /**
      * @notice This mapping stores the MainContract address for each wallet address.
      */
@@ -84,7 +83,6 @@ contract MainContractDeployer is CCIPReceiver {
      * @notice This mapping stores the tool used for each chain ID.
      * @dev 0 => Chainlink CCIP, 1 => Hyperlane
      */
-    mapping(uint256 chainId => uint256 toolIndex) public s_toolsUsed;
     uint256[] public s_supportedChainIds;
 
     // Chainlink CCIP Router address
@@ -118,10 +116,9 @@ contract MainContractDeployer is CCIPReceiver {
         else s_chainlinkCCIP = _chainlinkCCIP;
     }
 
-    function setToolForChainId(uint256 _chainId, uint256 _toolIndex) external {
-        s_toolsUsed[_chainId] = _toolIndex;
-        s_supportedChainIds.push(_chainId);
-        emit MainContractDeployer__UpdatedToolForSupportedChainId();
+    function setUtils(address _utils) external {
+        s_utils = _utils;
+        emit MainContractDeployer__UtilsUpdated(_utils);
     }
 
     /**
@@ -135,7 +132,7 @@ contract MainContractDeployer is CCIPReceiver {
 
         for (uint256 i = 0; i < length;) {
             uint256 chainId = s_supportedChainIds[i];
-            uint256 toolUsed = s_toolsUsed[chainId];
+            uint256 toolUsed = Utils(s_utils).getToolIndex(chainId);
             if (chainId == block.chainid) {
                 _createMainContractOnSameChain(_salt);
             } else if (block.chainid != chainId && toolUsed == 0) {

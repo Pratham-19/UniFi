@@ -79,31 +79,43 @@ contract SetChainlinkCCIPOnDeployer is Script {
     }
 }
 
-contract SetToolForChainId is Script {
-    function setToolForChainId(address payable _mainContractDeployer, uint256 _chainId, uint256 _tool) public {
+contract SetUtilsOnDeployer is Script {
+    function setUtilsDeployer(address payable _mainContractDeployer, address _utils) public {
         vm.startBroadcast();
-        MainContractDeployer(_mainContractDeployer).setToolForChainId(_chainId, _tool);
+        MainContractDeployer(_mainContractDeployer).setUtils(_utils);
         vm.stopBroadcast();
     }
 
-    function setToolForChainIdUsingConfigs() public {
+    function setUtilsOnDeployerUsingConfigs() public {
         HelperConfig helperConfig = new HelperConfig();
         address mainContractDeployer = helperConfig.getMainContractDeployer();
-        uint256[] memory supportedChainIds = helperConfig.getSupportedChainIds();
+        address _utils = helperConfig.getUtilsAddress();
 
-        uint256 length = supportedChainIds.length;
-        for (uint256 i = 0; i < length;) {
-            uint256 chainId = supportedChainIds[i];
-            uint256 tool = helperConfig.getToolsUsed(chainId);
-            setToolForChainId(payable(mainContractDeployer), chainId, tool);
-            unchecked {
-                i++;
-            }
-        }
+        setUtilsDeployer(payable(mainContractDeployer), _utils);
     }
 
     function run() public {
-        setToolForChainIdUsingConfigs();
+        setUtilsOnDeployerUsingConfigs();
+    }
+}
+
+contract SetUtilsOnMain is Script {
+    function setUtilsMain(address payable _mainContractDeployer, address _utils) public {
+        vm.startBroadcast();
+        MainContract(_mainContractDeployer).setUtils(_utils);
+        vm.stopBroadcast();
+    }
+
+    function setUtilsOnMainUsingConfigs() public {
+        HelperConfig helperConfig = new HelperConfig();
+        address mainContractDeployer = helperConfig.getMainContractDeployer();
+        address _utils = helperConfig.getUtilsAddress();
+
+        setUtilsMain(payable(mainContractDeployer), _utils);
+    }
+
+    function run() public {
+        setUtilsOnMainUsingConfigs();
     }
 }
 
@@ -111,7 +123,7 @@ contract SetToolForChainId is Script {
  * @notice MANUALLY CHANGGE THE `mainContractDeployer` ADDRESS
  */
 contract StartWalletCreation is Script {
-    bytes32 public salt = 0x736f63657468696e67206e657700000000000000000000000000000000000000;
+    bytes32 public salt = 0x736f78653778567e67326e657700000000000000000000000000000000000000;
 
     function startWalletCreation(address payable _mainContractDeployer) public {
         MainContractDeployer mainContractDeployer = MainContractDeployer(_mainContractDeployer);
@@ -162,6 +174,28 @@ contract MintUSDCForWallets is Script {
     }
 }
 
+contract SetCCIPForMainContract is Script {
+    function setCCIPForMainContract(address _mainContract, address _ccip) public {
+        MainContract mainContract = MainContract(payable(_mainContract));
+
+        vm.startBroadcast();
+        mainContract.setChainlinkCCIP(payable(_ccip));
+        vm.stopBroadcast();
+    }
+
+    function setCCIPForMainContractUsingConfigs() public {
+        HelperConfig helperConfig = new HelperConfig();
+        address mainContract = helperConfig.getMainContract();
+        address ccip = helperConfig.getChainlinkCCIPAddress();
+
+        setCCIPForMainContract(mainContract, ccip);
+    }
+
+    function run() public {
+        setCCIPForMainContractUsingConfigs();
+    }
+}
+
 contract SendMoney is Script {
     function sendMoney(MainContract _mainContract, address _to, uint256[] memory _chainIds, uint256[] memory _amount)
         public
@@ -177,7 +211,7 @@ contract SendMoney is Script {
 
         MainContract mainContract = MainContract(payable(_mainWallet));
 
-        address _to = helperConfig.getLatestTreasuryContract();
+        address _to = helperConfig.getUtilsAddress();
 
         (uint256[] memory _chainIds, uint256[] memory _amount) = helperConfig.getCCIPDataForTransfer();
 

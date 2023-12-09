@@ -27,6 +27,10 @@ pragma solidity 0.8.19;
 import "@hyperlane-xyz/core/contracts/interfaces/IMailbox.sol";
 
 contract HyperlaneMessageAPI {
+    error HyperlaneMessageAPI__InsufficientBalance();
+
+    event HyperlaneMessageAPI__MessageSent(address indexed _to, uint256 indexed _chainId, uint256 indexed _amount);
+
     address public immutable i_mailbox;
 
     constructor(address _mailbox) {
@@ -39,7 +43,9 @@ contract HyperlaneMessageAPI {
         bytes memory message = abi.encode(_to, _amount);
 
         uint256 quote = IMailbox(i_mailbox).quoteDispatch(chainId, receiverAddress, message);
+        if (quote > address(this).balance) revert HyperlaneMessageAPI__InsufficientBalance();
 
+        emit HyperlaneMessageAPI__MessageSent(_to, _chainId, _amount);
         IMailbox(i_mailbox).dispatch{value: quote}(chainId, receiverAddress, message);
     }
 

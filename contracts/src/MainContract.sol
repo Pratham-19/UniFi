@@ -24,8 +24,10 @@
 
 pragma solidity 0.8.19;
 
+import {Utils} from "./Utils.sol";
 import {Treasury} from "./Treasury.sol";
 import {ChainlinkCCIP} from "./tools/ChainlinkCCIP.sol";
+import {HyperlaneMessageAPI} from "./tools/HyperlaneMessageAPI.sol";
 
 import {IERC20} from "@openzeppelin/contracts/token/ERC20/IERC20.sol";
 import {CCIPReceiver} from "@chainlink/contracts-ccip/src/v0.8/ccip/applications/CCIPReceiver.sol";
@@ -58,10 +60,14 @@ contract MainContract is CCIPReceiver {
     event MainContract__ChainlinkFunctionsUpdated(address indexed _chainlinkFunctions);
     event MainContract__AssetTransferDirectly(address indexed _to, uint256 indexed _amount);
     event MainContract__TransferSucceeded(uint256 indexed _amount, bytes32 indexed _messageId);
-    event MainContract__RequestReceivedForCrossChainTransfer(
+    event MainContract__RequestReceivedForCCIP(
         address indexed _to, uint256 indexed _sourceChainSelector, uint256 _amount, bytes32 indexed _messageId
     );
-    event MainContract__UpdatedToolForSupportedChainId();
+    event MainContract__RequestReceivedForHyperlane(
+        address indexed _to, uint256 indexed _amount, address indexed _sender
+    );
+    event MainContract__UpdatedToolForSupportedChainId(uint256 indexed _chainId, uint256 indexed _toolIndex);
+    event MainContract__UtilsUpdated(address indexed _utils);
 
     /*
            _        _                         _       _     _
@@ -70,10 +76,9 @@ contract MainContract is CCIPReceiver {
       \__ \ || (_| | ||  __/  \ V / (_| | |  | | (_| | |_) | |  __/\__ \
       |___/\__\__,_|\__\___|   \_/ \__,_|_|  |_|\__,_|_.__/|_|\___||___/
     */
-    string public s_password;
     address payable public s_chainlinkCCIP;
+    address public s_utils;
     uint256[] public s_supportedChainIds;
-    mapping(uint256 chainId => uint256 toolIndex) public s_toolsUsed;
 
     address public immutable i_usdc;
     address public immutable i_factory;
@@ -110,10 +115,9 @@ contract MainContract is CCIPReceiver {
         emit MainContract__ChainlinkCCIPUpdated(_chainlinkCCIP);
     }
 
-    function setToolForChainId(uint256 _chainId, uint256 _toolIndex) external {
-        s_toolsUsed[_chainId] = _toolIndex;
-        s_supportedChainIds.push(_chainId);
-        emit MainContract__UpdatedToolForSupportedChainId();
+    function setUtils(address _utils) external {
+        s_utils = _utils;
+        emit MainContract__UtilsUpdated(_utils);
     }
     /*
                    _     _ _
@@ -132,11 +136,21 @@ contract MainContract is CCIPReceiver {
         uint256 _chainIdsLength = _chainIds.length;
         if (_chainIdsLength <= 0) revert MainContract__EmptyArray();
 
-        if (_chainIdsLength == 1 && _chainIds[0] == block.chainid) {
-            uint256 _amount = _amounts[0];
-            _sendMoneyOnSameChain(_to, _amount);
-        } else {
-            _sendMoneyOnOtherChain(_chainIds, _amounts);
+        for (uint256 i = 0; i < _chainIdsLength;) {
+            uint256 chainId = _chainIds[i];
+            uint256 amount = _amounts[i];
+            uint256 toolIndex = Utils(s_utils).getToolIndex(chainId);
+            if (chainId == block.chainid) {
+                if (amount > 0) _sendUSDC(_to, amount);
+            } else if (toolIndex == 0) {
+                ChainlinkCCIP(s_chainlinkCCIP).sendMoneyOnOtherChain(_to, chainId, amount);
+            } else if (toolIndex == 1) {
+                HyperlaneMessageAPI(s_chainlinkCCIP).sendMoneyOnOtherChain(_to, chainId, amount);
+            }
+
+            unchecked {
+                i++;
+            }
         }
     }
 
@@ -156,7 +170,7 @@ contract MainContract is CCIPReceiver {
         bytes32 messageId = message.messageId;
         uint64 sourceChainSelector = message.sourceChainSelector;
 
-        emit MainContract__RequestReceivedForCrossChainTransfer(recipient, sourceChainSelector, amt, messageId);
+        emit MainContract__RequestReceivedForCCIP(recipient, sourceChainSelector, amt, messageId);
 
         _sendUSDCWithMessageId(recipient, amt, messageId);
     }
@@ -175,7 +189,7 @@ contract MainContract is CCIPReceiver {
         for (uint256 i = 0; i < _chainIds.length;) {
             uint256 chainId = _chainIds[i];
             uint256 amount = _amounts[i];
-            uint256 toolIndex = s_toolsUsed[chainId];
+            uint256 toolIndex = Utils(s_utils).getToolIndex(chainId);
             if (chainId == block.chainid) {
                 if (amount > 0) _sendUSDC(i_treasury, amount);
             } else if (toolIndex == 0) {
@@ -213,5 +227,15 @@ contract MainContract is CCIPReceiver {
         } else {
             revert MainContract__TransferFailedWithMessageId(_amount, _messageId);
         }
+    }
+
+    function handle(uint32 _origin, bytes32 _sender, bytes memory _body) external {
+        (address recipient, uint256 amt) = abi.decode(_body, (address, uint256));
+        emit MainContract__RequestReceivedForHyperlane(recipient, amt, bytes32ToAddress(_sender));
+        _sendUSDC(recipient, amt);
+    }
+
+    function bytes32ToAddress(bytes32 _buf) internal pure returns (address) {
+        return address(uint160(uint256(_buf)));
     }
 }

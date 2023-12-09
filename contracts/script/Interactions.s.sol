@@ -33,30 +33,54 @@ contract SetChainlinkCCIPOnDeployer is Script {
     }
 }
 
+contract SetToolForChainId is Script {
+    function setToolForChainId(address payable _mainContractDeployer, uint256 _chainId, uint256 _tool) public {
+        vm.startBroadcast();
+        MainContractDeployer(_mainContractDeployer).setToolForChainId(_chainId, _tool);
+        vm.stopBroadcast();
+    }
+
+    function setToolForChainIdUsingConfigs() public {
+        HelperConfig helperConfig = new HelperConfig();
+        address mainContractDeployer = helperConfig.getMainContractDeployer();
+        uint256[] memory supportedChainIds = helperConfig.getSupportedChainIds();
+
+        uint256 length = supportedChainIds.length;
+        for (uint256 i = 0; i < length;) {
+            uint256 chainId = supportedChainIds[i];
+            uint256 tool = helperConfig.getToolsUsed(chainId);
+            setToolForChainId(payable(mainContractDeployer), chainId, tool);
+            unchecked {
+                i++;
+            }
+        }
+    }
+
+    function run() public {
+        setToolForChainIdUsingConfigs();
+    }
+}
+
 /**
  * @notice MANUALLY CHANGGE THE `mainContractDeployer` ADDRESS
  */
 contract StartWalletCreation is Script {
     bytes32 public salt = 0x736572696f75732474657374696e673200000000000000000000000000000000;
 
-    function startWalletCreation(
-        address payable _mainContractDeployer,
-        MainContractDeployer.CCIPDataForWalletCreation[] memory _ccipData
-    ) public {
+    function startWalletCreation(address payable _mainContractDeployer) public {
         MainContractDeployer mainContractDeployer = MainContractDeployer(_mainContractDeployer);
 
         vm.startBroadcast();
-        mainContractDeployer.startWalletCreation(_ccipData, salt);
+        mainContractDeployer.startWalletCreation(salt);
         vm.stopBroadcast();
     }
 
     function startWalletCreationUsingConfigs() public {
         HelperConfig helperConfig = new HelperConfig();
-        MainContractDeployer.CCIPDataForWalletCreation[] memory ccipData = helperConfig.getCCIPDataForWalletCreation();
 
         address payable mainContractDeployer = helperConfig.getMainContractDeployer();
 
-        startWalletCreation(mainContractDeployer, ccipData);
+        startWalletCreation(mainContractDeployer);
     }
 
     function run() public {

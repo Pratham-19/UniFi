@@ -22,10 +22,7 @@ contract HelperConfig is Script {
     uint256 public constant CCIP_GAS_LIMIT = 6_000_000;
     bool public constant CCIP_STRICT = false;
 
-    MainContractDeployer.CCIPDataForWalletCreation[] public ccipDataForWalletCreation = [
-        MainContractDeployer.CCIPDataForWalletCreation({chainId: 80001, toolUsed: MainContractDeployer.TOOL.HYPERLANE}),
-        MainContractDeployer.CCIPDataForWalletCreation({chainId: 11155111, toolUsed: MainContractDeployer.TOOL.CHAINLINK})
-    ];
+    uint256[] public supportedChainIds = [11155111, 80001];
 
     constructor() {
         if (block.chainid == 11155111) {
@@ -37,26 +34,18 @@ contract HelperConfig is Script {
         }
     }
 
-    function getCCIPDataForWalletCreation()
-        public
-        view
-        returns (MainContractDeployer.CCIPDataForWalletCreation[] memory)
-    {
-        MainContractDeployer.CCIPDataForWalletCreation[] memory ccipData =
-        new MainContractDeployer.CCIPDataForWalletCreation[](
-          ccipDataForWalletCreation.length
-        );
+    function getSupportedChainIds() external view returns (uint256[] memory) {
+        return supportedChainIds;
+    }
 
-        for (uint256 i = 0; i < ccipDataForWalletCreation.length;) {
-            ccipData[i] = MainContractDeployer.CCIPDataForWalletCreation(
-                ccipDataForWalletCreation[i].chainId, ccipDataForWalletCreation[i].toolUsed
-            );
-            unchecked {
-                i++;
-            }
+    function getToolsUsed(uint256 _chainId) external pure returns (uint256 toolIndex) {
+        if (_chainId == 11155111) {
+            return 0;
+        } else if (_chainId == 80001) {
+            return 0;
+        } else {
+            revert HelperConfig__InvalidChainId();
         }
-
-        return ccipData;
     }
 
     function getCCIPDataForTransfer() public pure returns (MainContract.CCIPData[] memory) {
@@ -76,7 +65,7 @@ contract HelperConfig is Script {
     }
 
     function getMainContractDeployer() external pure returns (address payable) {
-        return payable(0xb8F38C681BeA35F09795C3a6bE6399dD789bfbf0);
+        return payable(0x49151b0741f0D8a87973A9cD27d631E02a45552C);
     }
 
     function getChainlinkCCIPAddress() external pure returns (address) {

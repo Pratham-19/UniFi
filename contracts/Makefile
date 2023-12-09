@@ -99,6 +99,9 @@ deployUtils:
 deployMainContractDeployer:
 	@forge script script/DeployMainContractDeployer.s.sol:DeployMainContractDeployer $(NETWORK_ARGS)
 
+setToolForChainId: 
+	@forge script script/Interactions.s.sol:SetToolForChainId $(NETWORK_ARGS)
+
 deployChainlinkCCIP:
 	@forge script script/DeployChainlinkCCIP.s.sol:DeployChainlinkCCIP $(NETWORK_ARGS)
 
@@ -106,7 +109,7 @@ setChainlinkCCIPOnDeployer:
 	@forge script script/Interactions.s.sol:SetChainlinkCCIPOnDeployer $(NETWORK_ARGS)
 
 startWalletCreation:
-	@forge script script/Interactions.s.sol:StartWalletCreation $(NETWORK_ARGS)
+	@forge script script/Interactions.s.sol:StartWalletCreation $(NETWORK_ARGS) -vvvvv
 
 mintUSDCForWallets:
 	@forge script script/Interactions.s.sol:MintUSDCForWallets $(NETWORK_ARGS)
@@ -125,6 +128,9 @@ deployUtilsOnTestnets:
 
 deployMainContractDeployerOnTestnets:
 	make deployMainContractDeployer ARGS="--network mumbai" && make deployMainContractDeployer ARGS="--network sepolia"
+
+setToolForChainIdOnTestnets:
+	make setToolForChainId ARGS="--network mumbai" && make setToolForChainId ARGS="--network sepolia"
 
 deployChainlinkCCIPOnTestnets:
 	make deployChainlinkCCIP ARGS="--network mumbai" && make deployChainlinkCCIP ARGS="--network sepolia"

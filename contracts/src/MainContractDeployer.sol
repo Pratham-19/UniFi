@@ -44,6 +44,7 @@ contract MainContractDeployer is CCIPReceiver {
        \___|_|  |_|  \___/|_|  |___/
     */
     error MainContractDeployer__EmptyArray();
+    error MainContractDeployer__InvalidTool();
     error MainContractDeployer__InvalidAddress();
 
     /*
@@ -64,25 +65,7 @@ contract MainContractDeployer is CCIPReceiver {
         address indexed mainContractAddress, bytes32 indexed messageId
     );
     event MainContractDeployer__MainContractCreated(address indexed mainContractAddress);
-
-    /*
-       _                          _           _                 _   _
-      | |_ _   _ _ __   ___    __| | ___  ___| | __ _ _ __ __ _| |_(_) ___  _ __  ___
-      | __| | | | '_ \ / _ \  / _` |/ _ \/ __| |/ _` | '__/ _` | __| |/ _ \| '_ \/ __|
-      | |_| |_| | |_) |  __/ | (_| |  __/ (__| | (_| | | | (_| | |_| | (_) | | | \__ \
-       \__|\__, | .__/ \___|  \__,_|\___|\___|_|\__,_|_|  \__,_|\__|_|\___/|_| |_|___/
-           |___/|_|
-    */
-
-    enum TOOL {
-        CHAINLINK,
-        HYPERLANE
-    }
-
-    struct CCIPDataForWalletCreation {
-        uint256 chainId;
-        TOOL toolUsed;
-    }
+    event MainContractDeployer__UpdatedToolForSupportedChainId();
 
     /*
            _        _                         _       _     _
@@ -97,6 +80,12 @@ contract MainContractDeployer is CCIPReceiver {
      * @notice This mapping stores the MainContract address for each wallet address.
      */
     mapping(address wallet => address mainContract) public s_mainContracts;
+    /**
+     * @notice This mapping stores the tool used for each chain ID.
+     * @dev 0 => Chainlink CCIP, 1 => Hyperlane
+     */
+    mapping(uint256 chainId => uint256 toolIndex) public s_toolsUsed;
+    uint256[] public s_supportedChainIds;
 
     // Chainlink CCIP Router address
     address public immutable i__router;
@@ -129,22 +118,27 @@ contract MainContractDeployer is CCIPReceiver {
         else s_chainlinkCCIP = _chainlinkCCIP;
     }
 
+    function setToolForChainId(uint256 _chainId, uint256 _toolIndex) external {
+        s_toolsUsed[_chainId] = _toolIndex;
+        s_supportedChainIds.push(_chainId);
+        emit MainContractDeployer__UpdatedToolForSupportedChainId();
+    }
+
     /**
      * This function deploys the MainContract on multiple chains.
-     * @param _ccipData The chain IDs of the destination chains
      * @param _salt The salt to use for the CREATE3 call
      * @notice The chainIds will contain the chain ID of the chain on which the MainContractDeployer is deployed at 0 index.
      */
-    function startWalletCreation(CCIPDataForWalletCreation[] memory _ccipData, bytes32 _salt) external {
-        uint256 length = _ccipData.length;
+    function startWalletCreation(bytes32 _salt) external {
+        uint256 length = s_supportedChainIds.length;
         if (length < 1) revert MainContractDeployer__EmptyArray();
 
         for (uint256 i = 0; i < length;) {
-            uint256 chainId = _ccipData[i].chainId;
-            TOOL toolUsed = _ccipData[i].toolUsed;
+            uint256 chainId = s_supportedChainIds[i];
+            uint256 toolUsed = s_toolsUsed[chainId];
             if (chainId == block.chainid) {
                 _createMainContractOnSameChain(_salt);
-            } else if (toolUsed == TOOL.CHAINLINK) {
+            } else if (toolUsed == 0) {
                 _createMainContractOnDifferentChainUsingChainlink(_salt, chainId);
             }
             unchecked {

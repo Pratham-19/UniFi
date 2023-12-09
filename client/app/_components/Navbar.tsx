@@ -1,18 +1,18 @@
-"use client";
-import Image from "next/image";
-import React, { useState } from "react";
-import { NotifTransact } from ".";
+'use client';
+import Image from 'next/image';
+import React, { useState } from 'react';
+import { NotifTransact } from '.';
 
 const Navbar = () => {
   const currentPage = window.location.pathname;
   const [notifClicked, setNotifClicked] = useState(false);
   console.log(currentPage);
   return (
-    <div className="w-[100vw] grid grid-flow-col py-[6px] pl-32 pr-20 border-b-[1px] border-solid border-[#1c1b1f] bg-[#f1f1f1]">
+    <div className="w-[100vw] flex flex-row items-center justify-between py-[6px] pl-32 pr-20 border-b-[1px] border-solid border-[#1c1b1f] bg-[#f1f1f1] z-50">
       {/* logo name */}
       <div className="self-center place-self-start grid grid-flow-col gap-[10px] w-fit">
         <Image
-          src={"/logo.svg"}
+          src={'/logo.svg'}
           alt="logo"
           width={50}
           height={50}
@@ -21,28 +21,28 @@ const Navbar = () => {
         <h2 className="text-[39px] self-center place-self-center">UNIFY</h2>
       </div>
       {/* nav name notif */}
-      {currentPage != "/" && (
+      {currentPage != '/' && (
         <div className="grid grid-flow-col gap-8 self-center place-self-end">
           {/* nav items */}
           <div className="grid grid-flow-col self-center place-self-center pl-8 gap-8">
             <h3
               className={`text-[21px] hover:border-b-2 hover:font-semibold hover:cursor-pointer
             ${
-              currentPage == "/chat" ? "border-b-2" : ""
+              currentPage == '/chat' ? 'border-b-2' : ''
             } border-solid border-[#1c1b1f]`}
             >
               Chat
             </h3>
             <h3
               className={`text-[21px] hover:border-b-2 hover:font-semibold hover:cursor-pointer ${
-                currentPage == "/home" ? "border-b-2" : ""
+                currentPage == '/home' ? 'border-b-2' : ''
               } border-solid border-[#1c1b1f]`}
             >
               Transfer
             </h3>
             <h3
               className={`text-[21px] hover:border-b-2 hover:font-semibold hover:cursor-pointer ${
-                currentPage == "/mynfts" ? "border-b-2" : ""
+                currentPage == '/mynfts' ? 'border-b-2' : ''
               } border-solid border-[#1c1b1f]`}
             >
               My NFTs
@@ -53,7 +53,7 @@ const Navbar = () => {
             {/* name */}
             <div className="px-5 grid grid-flow-col gap-[10px] py-[6px]">
               <Image
-                src={"/wallet.svg"}
+                src={'/wallet.svg'}
                 alt="wallet"
                 width={24}
                 height={24}
@@ -69,12 +69,12 @@ const Navbar = () => {
               onClick={() => setNotifClicked(!notifClicked)}
             >
               <Image
-                src={"/notifications.png"}
+                src={'/notifications.png'}
                 alt="notif bell"
                 width={24}
                 height={24}
               />
-              <h3 className="text-[21px]">{"1 "}new</h3>
+              <h3 className="text-[21px]">{'1 '}new</h3>
             </div>
             {/* notif drop down */}
             {notifClicked && (
@@ -83,7 +83,7 @@ const Navbar = () => {
                 <div className="w-[100%] grid grid-flow-col gap-3 self-start place-self-center p-[10px] rounded-full bg-[#48637C]">
                   <div className="grid grid-flow-col text-[#ffffff] gap-1">
                     <Image
-                      src={"/bell.svg"}
+                      src={'/bell.svg'}
                       width={15}
                       height={15}
                       alt="updates"
@@ -94,7 +94,7 @@ const Navbar = () => {
                     </h3>
                   </div>
                   <Image
-                    src={"/close.svg"}
+                    src={'/close.svg'}
                     alt="cross"
                     width={24}
                     height={24}
@@ -110,6 +110,11 @@ const Navbar = () => {
             )}
           </div>
         </div>
+      )}
+      {currentPage == '/' && (
+        <button className="text-[32px] bg-[#48637C] text-[#ffffff] hover:shadow-[0px_6px_0px_0px_#091D31] h-fit w-fit rounded-[8px] px-8 py-2 flex gap-4 justify-center border-[1px] border-solid border-[#091D31]">
+          Start transferring
+        </button>
       )}
     </div>
   );

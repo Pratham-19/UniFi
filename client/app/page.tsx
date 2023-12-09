@@ -6,27 +6,34 @@ export default function Home() {
   return (
     <div className="w-[100vw] bg-[linear-gradient(299deg,_#FFFCEA_0%,_#FFF8D4_0.01%,_#F8FCFF_100%)] flex flex-col items-center justify-center">
       <Navbar />
-      <main className="flex flex-row justify-between pt-[40px]">
+      <Image
+        src={'/mainLanding/landing-nettop.png'}
+        width={1200}
+        height={900}
+        alt="bg"
+        className="absolute top-0 opacity-75"
+      />
+      <main className="flex flex-row justify-between pt-[40px] z-10 min-h-[75vh]">
         <Image
           src={'/mainLanding/landing-boxleft.png'}
           alt="coin input"
           width={350}
           height={469}
-          className=""
+          className="absolute left-0"
         />
-        <div className="flex flex-col justify-center items-center">
-          <h3 className="text-[39px] text-center">
+        <div className="flex flex-col justify-start items-center z-20 pt-12 gap-6">
+          <h3 className="text-[39px] text-center font-normal">
             transferring cross-chain simplified
           </h3>
-          <h1 className="text-[51px] font-semibold text-center">
+          <h1 className="text-[66px] font-bold text-center">
             ONE CLICK TRANSFERS
           </h1>
-          <button className="hover:shadow-[0px_6px_0px_0px_#091D31] h-fit rounded-[8px] px-8 py-3 flex gap-4 justify-center border-[1px] border-solid border-[#091D31]">
+          <button className="hover:shadow-[0px_6px_0px_0px_#091D31] h-fit rounded-[8px] px-12 py-3 flex gap-4 justify-center border-[1px] border-solid border-[#091D31] bg-[#f1f1f1]">
             <Image
               src={'/blender.svg'}
               alt="blender"
-              height={40}
-              width={40}
+              height={30}
+              width={30}
               className="self-center"
             />
             <Link href={'/getStarted'} className="text-[24px] self-center">
@@ -39,10 +46,10 @@ export default function Home() {
           alt="coin input"
           width={450}
           height={450}
-          className=""
+          className="absolute right-0"
         />
       </main>
-      <div className="bg-[#091D31] px-16 flex w-[100vw] pt-8 justify-around">
+      <div className="bg-[#091D31] px-16 flex w-[100vw] pt-8 justify-around z-10">
         <Image
           src={'/mainLanding/landing-boxes.png'}
           alt="lanign"

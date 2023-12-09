@@ -6,6 +6,10 @@ import ChainSubtotal from './ChainSubtotal';
 import NotifTransact from './NotifTransact';
 import Nft from './Nft';
 import Poap from './Poap';
+import ChatProfile from './ChatProfile';
+import LhsChat from './LhsChat';
+import ChatRecieved from './ChatRecieved';
+import ChatSent from './ChatSent';
 export {
   Navbar,
   Footer,
@@ -14,5 +18,9 @@ export {
   ChainSubtotal,
   NotifTransact,
   Nft,
-  Poap
+  Poap,
+  ChatProfile,
+  LhsChat,
+  ChatRecieved,
+  ChatSent
 };

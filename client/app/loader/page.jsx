@@ -1,8 +1,5 @@
 import React from 'react';
 import Image from 'next/image';
-import { Marcellus } from 'next/font/google';
-
-const marcellus = Marcellus({ weight: ['400'], subsets: ['latin'] });
 
 const LoaderPage = () => {
   return (
@@ -31,9 +28,7 @@ const LoaderPage = () => {
               width={100}
               height={100}
             />
-            <h1 className={cn('text-8xl self-center', marcellus.className)}>
-              UNIFI
-            </h1>
+            <h1 className="text-8xl self-center font-mar_reg">UNIFI</h1>
           </div>
 
           <h3 className="self-center place-self-center text-[32px]">

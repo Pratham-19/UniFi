@@ -14,7 +14,8 @@ const config: Config = {
         cg_light: ['ClashGrotesk-light'],
         cg_reg: ['ClashGrotesk-Regular'],
         cg_med: ['ClashGrotesk-Medium'],
-        cg_semibold: ['ClashGrotesk-SemiBold']
+        cg_semibold: ['ClashGrotesk-SemiBold'],
+        mar_reg: ['Marcellus']
       }
     }
   },

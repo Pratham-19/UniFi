@@ -1,10 +1,7 @@
 import { cn } from '../../_lib/utils';
 import Image from 'next/image';
 import React from 'react';
-import { Marcellus } from 'next/font/google';
 import MaxWidthWrapper from '../MaxWidthWrapper';
-
-const marcellus = Marcellus({ weight: ['400'], subsets: ['latin'] });
 
 const AuthNavbar = ({
   className,
@@ -17,8 +14,7 @@ const AuthNavbar = ({
     <nav
       className={cn(
         'w-full bg-[#F1F1F1]/[0.5] border-b border-black flex justify-between items-center h-16 px-5 py-9 z-50  transition-transform duration-300 shadow-md backdrop-blur-lg sticky top-0 ',
-        className,
-        marcellus.className
+        className
       )}
     >
       <MaxWidthWrapper className="flex justify-between items-center">

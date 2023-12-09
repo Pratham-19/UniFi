@@ -2,6 +2,8 @@
 @tailwind components;
 @tailwind utilities;
 
+@import url('https://fonts.googleapis.com/css2?family=Marcellus&display=swap');
+
 @font-face {
   font-family: 'ClashGrotesk-Bold';
   src: url('/fonts/ClashGrotesk-Bold.otf');

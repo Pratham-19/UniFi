@@ -68,6 +68,7 @@ contract ChainlinkCCIP {
 
     address public immutable i_router;
     address public immutable i_factory;
+    address public immutable i_link;
 
     modifier onlyWhitelisted(address _caller) {
         address factory = MainContract(payable(_caller)).i_factory();
@@ -79,9 +80,10 @@ contract ChainlinkCCIP {
      * @param _router The address of the Router contract
      * @param _factory The address of the Factory contract
      */
-    constructor(address _router, address _factory) {
+    constructor(address _router, address _factory, address _link) {
         i_router = _router;
         i_factory = _factory;
+        i_link = _link;
     }
 
     /*
@@ -123,7 +125,7 @@ contract ChainlinkCCIP {
             data: messageData,
             tokenAmounts: new Client.EVMTokenAmount[](0),
             extraArgs: "",
-            feeToken: address(0)
+            feeToken: i_link
         });
         uint256 fee = IRouterClient(i_router).getFee(destinationChainSelector, message);
 
@@ -140,7 +142,7 @@ contract ChainlinkCCIP {
             data: messageData,
             tokenAmounts: new Client.EVMTokenAmount[](0),
             extraArgs: Client._argsToBytes(ccipExtraArgs),
-            feeToken: address(0)
+            feeToken: i_link
         });
         uint256 fee = IRouterClient(i_router).getFee(destinationChainSelector, message);
 
@@ -148,4 +150,8 @@ contract ChainlinkCCIP {
 
         emit ChainlinkCCIP__RequestSentForCrossChainDeployment(destinationChainSelector, messageId);
     }
+
+    receive() external payable {}
+
+    fallback() external payable {}
 }

@@ -13,6 +13,7 @@ contract HelperConfig is Script {
     struct NetworkConfig {
         address router;
         address usdc;
+        address link;
     }
 
     NetworkConfig public activeNetworkConfig;
@@ -65,24 +66,30 @@ contract HelperConfig is Script {
     }
 
     function getMainContractDeployer() external pure returns (address payable) {
-        return payable(0x49151b0741f0D8a87973A9cD27d631E02a45552C);
+        return payable(0x0057D5F962A9fe1b5a71226E221C52D30E3f7A11);
     }
 
     function getChainlinkCCIPAddress() external pure returns (address) {
-        return 0x61190B0035377C8437F8524aaCfA76010EB121Bc;
+        return 0x61461f8801090320723cc3a90466e0910f2f7A30;
+    }
+
+    function getUtilsAddress() external pure returns (address) {
+        return 0xF981f02EDAb3E2EAe03746145b64C85B9eC14Aad;
     }
 
     function getSepoliaConfigs() internal pure returns (NetworkConfig memory) {
         return NetworkConfig({
             router: 0xD0daae2231E9CB96b94C8512223533293C3693Bf,
-            usdc: 0xf80E7ce8166b91b110FE022326AAdDf7085Bf0B9
+            usdc: 0xf80E7ce8166b91b110FE022326AAdDf7085Bf0B9,
+            link: 0x779877A7B0D9E8603169DdbD7836e478b4624789
         });
     }
 
     function getMumbaiConfigs() internal pure returns (NetworkConfig memory) {
         return NetworkConfig({
             router: 0x70499c328e1E2a3c41108bd3730F6670a44595D1,
-            usdc: 0xf80E7ce8166b91b110FE022326AAdDf7085Bf0B9
+            usdc: 0xf80E7ce8166b91b110FE022326AAdDf7085Bf0B9,
+            link: 0x326C977E6efc84E512bB9C30f76E30c160eD06FB
         });
     }
 }

@@ -91,7 +91,7 @@ contract MainContract is CCIPReceiver {
       |___/\__\__,_|\__\___|   \_/ \__,_|_|  |_|\__,_|_.__/|_|\___||___/
     */
     string public s_password;
-    address public s_chainlinkCCIP;
+    address payable public s_chainlinkCCIP;
     address public s_chainlinkFunctions;
 
     address public immutable i_usdc;
@@ -125,7 +125,7 @@ contract MainContract is CCIPReceiver {
     */
 
     function setChainlinkCCIP(address _chainlinkCCIP) external {
-        s_chainlinkCCIP = _chainlinkCCIP;
+        s_chainlinkCCIP = payable(_chainlinkCCIP);
         emit MainContract__ChainlinkCCIPUpdated(_chainlinkCCIP);
     }
 

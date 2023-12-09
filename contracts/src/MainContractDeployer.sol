@@ -75,7 +75,7 @@ contract MainContractDeployer is CCIPReceiver {
       |___/\__\__,_|\__\___|   \_/ \__,_|_|  |_|\__,_|_.__/|_|\___||___/
     */
 
-    address public s_chainlinkCCIP;
+    address payable public s_chainlinkCCIP;
     /**
      * @notice This mapping stores the MainContract address for each wallet address.
      */
@@ -113,7 +113,7 @@ contract MainContractDeployer is CCIPReceiver {
        \___/_/\_\\__\___|_|  |_| |_|\__,_|_|
     */
 
-    function setChainlinkCCIP(address _chainlinkCCIP) external {
+    function setChainlinkCCIP(address payable _chainlinkCCIP) external {
         if (_chainlinkCCIP == address(0)) revert MainContractDeployer__InvalidAddress();
         else s_chainlinkCCIP = _chainlinkCCIP;
     }

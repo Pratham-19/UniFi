@@ -9,7 +9,7 @@ import {HelperConfig} from "./HelperConfig.s.sol";
 import {ChainlinkCCIP} from "../src/tools/ChainlinkCCIP.sol";
 
 contract DeployChainlinkCCIP is Script {
-    bytes32 public constant SALT = 0x736572696f75732474657374696e673200000000000000000000000000000000;
+    bytes32 public constant SALT = 0x726f6d657468696e67206e657700000000000000000000000000000000000000;
 
     function deployChainlinkCCIP(bytes memory _bytecode) public {
         vm.startBroadcast();
@@ -20,11 +20,11 @@ contract DeployChainlinkCCIP is Script {
 
     function deployChainlinkCCIPUsingConfigs() public {
         HelperConfig helperConfig = new HelperConfig();
-        (address router,) = helperConfig.activeNetworkConfig();
+        (address router,, address link) = helperConfig.activeNetworkConfig();
         address factory = helperConfig.getMainContractDeployer();
         bytes memory bytecode = abi.encodePacked(
             type(ChainlinkCCIP).creationCode,
-            abi.encode(router, factory) // Encoding constructor parameters
+            abi.encode(router, factory, link) // Encoding constructor parameters
         );
         deployChainlinkCCIP(bytecode);
     }

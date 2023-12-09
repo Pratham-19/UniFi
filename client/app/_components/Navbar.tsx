@@ -3,8 +3,29 @@ import Image from 'next/image';
 import React, { useState } from 'react';
 import { NotifTransact } from '.';
 import { usePathname } from 'next/navigation';
-
+import { init, useQuery } from '@airstack/airstack-react';
+import {
+  GetENSFromAddress,
+  GetLensFromAddress
+} from '../_lib/airstack_queries';
+init(process.env.NEXT_PUBLIC_AIRSTACK_API_KEY ?? '');
 const Navbar = () => {
+  // Add to ENS
+  // const { data, loading, error } = useQuery(GetENSFromAddress, {
+  //   resolvedAddress: '0x2acdf6a2f893687ccd341a1ad7e27102b665d8c4'
+  // });
+  // const ens = data.Domain.name;
+
+  // Add to lens
+  // const { data, loading, error } = useQuery(GetLensFromAddress, {
+  //   resolvedAddress: '0x2acdf6a2f893687ccd341a1ad7e27102b665d8c4'
+  // });
+  // const lens = data.Socials.Social[0].profileName;
+  // ens.map((profile: any) => {
+  //   console.log(profile.profileImage);
+  //   console.log(profile.profileName);
+  // });
+
   const currentPage = usePathname();
 
   const [notifClicked, setNotifClicked] = useState(false);

@@ -9,9 +9,9 @@ const Page = () => {
   const { data, loading, error } = useQuery(GetNFTs, {
     resolvedAddress: '0x2acdf6a2f893687ccd341a1ad7e27102b665d8c4'
   });
-  const { data: getPoap } = useQuery(GetP, {
-    resolvedAddress: '0x2acdf6a2f893687ccd341a1ad7e27102b665d8c4'
-  });
+  // const { data: getPoap } = useQuery(GetP, {
+  //   resolvedAddress: '0x2acdf6a2f893687ccd341a1ad7e27102b665d8c4'
+  // });
   console.log(data, loading, error);
 
   return <div>Page</div>;

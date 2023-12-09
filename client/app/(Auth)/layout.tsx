@@ -1,12 +1,9 @@
-import React from 'react';
-import AuthNavbar from '../_components/Navbar/LoginNavbar';
-import Footer from '../_components/Footer';
-import MaxWidthWrapper from '../_components/MaxWidthWrapper';
+import React from "react";
 
 export default function RootLayout({
-  children
+    children,
 }: {
-  children: React.ReactNode;
+    children: React.ReactNode;
 }) {
-  return <div className="w-full h-[100vh] overflow-x-hidden">{children}</div>;
+    return <div className="w-full h-[100vh] overflow-x-hidden">{children}</div>;
 }

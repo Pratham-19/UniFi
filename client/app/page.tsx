@@ -1,4 +1,3 @@
-'use client';
 import Image from 'next/image';
 import { Navbar } from './_components';
 import Link from 'next/link';

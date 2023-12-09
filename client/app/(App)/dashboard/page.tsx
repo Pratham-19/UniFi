@@ -13,6 +13,8 @@ init(process.env.NEXT_PUBLIC_AIRSTACK_API_KEY ?? '');
 
 const DashboardPage = () => {
   const [recipient, setRecipient] = useState('');
+  const [network, setNetwork] = useState('');
+  const [amount, setAmount] = useState('');
 
   // ens TO ADD
   // const { data, loading, error } = useQuery(GetAddressFromEns, {
@@ -129,6 +131,9 @@ const DashboardPage = () => {
                     type="text"
                     placeholder="Type amount"
                     className="w-[100%] h-[100%] p-[10px] rounded-[12xp]"
+                    onChange={(e) => {
+                      setAmount(e.target.value);
+                    }}
                   />
                   <select name="dropdown" className="">
                     <option value={'usdc'}>USDC</option>

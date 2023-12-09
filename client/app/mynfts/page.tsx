@@ -1,5 +1,5 @@
 import React from 'react';
-import { Footer, Navbar, Nft } from '../_components';
+import { Footer, Navbar, Nft, Poap } from '../_components';
 import Image from 'next/image';
 
 const MyNftPage = () => {
@@ -14,7 +14,7 @@ const MyNftPage = () => {
         </div>{' '}
         <div className="self-start place-self-center grid grid-flow-col gap-4">
           <Nft />
-          <Nft />
+          <Poap />
           <Nft />
           <Nft />
         </div>

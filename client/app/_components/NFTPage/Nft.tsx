@@ -2,7 +2,17 @@ import Image from 'next/image';
 import Link from 'next/link';
 import React from 'react';
 
-const Nft = ({ chain, link,image,amt }: { chain: number; link?: string,image?:string,amt:string }) => {
+const Nft = ({
+  chain,
+  link,
+  image,
+  amt
+}: {
+  chain: number;
+  link?: string;
+  image?: string;
+  amt: string;
+}) => {
   return (
     <div className="bg-[#F1F1F1] rounded-[24px] px-[16px] pt-[16px] w-[288px] h-[380px] hover:scale-95 transition-transform duration-300">
       {chain == 1 && (
@@ -51,7 +61,7 @@ const Nft = ({ chain, link,image,amt }: { chain: number; link?: string,image?:st
           </div>
 
           <Link
-            href={link?? "https://opensea.io/assets"}
+            href={link ?? 'https://opensea.io/assets'}
             className="rounded-full bg-[#48637C] px-2 flex gap-2 hover:py-1"
           >
             <Image

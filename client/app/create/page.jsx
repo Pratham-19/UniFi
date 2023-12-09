@@ -7,7 +7,10 @@ const CreatePage = () => {
     <main className="w-[100vw] h-[90vh] bg-[#F1F1F1] grid md:grid-cols-2 grid-flow-row">
       <div className="md:w-[600px] w-[510px] py-4 flex flex-col justify-center items-center gap-4 px-[64px] place-self-center">
         <h1 className="text-[39px] pb-8 font-normal">Log In</h1>
-        <button className="w-[100%] hover:shadow-[0px_6px_0px_0px_#091D31] h-fit rounded-[8px] px-8 py-3 flex gap-4 justify-center border-[1px] border-solid border-[#091D31]">
+        <Link
+          href={'/loader'}
+          className="w-[100%] hover:shadow-[0px_6px_0px_0px_#091D31] h-fit rounded-[8px] px-8 py-3 flex gap-4 justify-center border-[1px] border-solid border-[#091D31]"
+        >
           <Image
             src={'/google.svg'}
             alt="google"
@@ -16,7 +19,7 @@ const CreatePage = () => {
             className="self-center"
           />
           <h3 className="text-[24px] self-center">Google</h3>
-        </button>
+        </Link>
         <button className="w-[100%] hover:shadow-[0px_6px_0px_0px_#091D31] h-fit rounded-[8px] px-8 py-3 flex gap-4 justify-center border-[1px] border-solid border-[#091D31]">
           <Image
             src={'/google.svg'}

@@ -1,4 +1,5 @@
 import Image from 'next/image';
+import Link from 'next/link';
 import React from 'react';
 
 const OtpPage = () => {
@@ -15,7 +16,10 @@ const OtpPage = () => {
             className="w-[100%] text-[16px] rounded-[8px] border-[1px] border-[#091D31] border-solid py-4 px-2 bg-[#00000000]"
           />
         </div>
-        <button className="w-[100%] hover:shadow-[0px_6px_0px_0px_#091D31] h-fit rounded-[8px] px-8 py-3 flex gap-4 justify-center border-[1px] border-solid border-[#091D31]">
+        <Link
+          href={'/loader'}
+          className="w-[100%] hover:shadow-[0px_6px_0px_0px_#091D31] h-fit rounded-[8px] px-8 py-3 flex gap-4 justify-center border-[1px] border-solid border-[#091D31]"
+        >
           <Image
             src={'/blender.svg'}
             alt="blender"
@@ -24,7 +28,7 @@ const OtpPage = () => {
             className="self-center"
           />
           <h3 className="text-[24px] self-center">Start Transferring</h3>
-        </button>
+        </Link>
       </div>
       <div className="w-[100%] h-[100%]">
         <Image

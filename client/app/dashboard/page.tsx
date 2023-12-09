@@ -1,14 +1,15 @@
-import React from "react";
+import React from 'react';
+import { chains } from '@/app/_lib/constants';
 import {
   Navbar,
   Footer,
   ChainFund,
   ChooseChain,
-  ChainSubtotal,
-} from "../_components";
-import Image from "next/image";
+  ChainSubtotal
+} from '../_components';
+import Image from 'next/image';
 
-const dashboardPage = () => {
+const DashboardPage = () => {
   return (
     <>
       <div className="w-[100vw] bg-[linear-gradient(299deg,_#FFFCEA_0%,_#FFF8D4_0.01%,_#F8FCFF_100%)]">
@@ -21,7 +22,7 @@ const dashboardPage = () => {
               {/* profile */}
               <div className="self-center place-self-center w-[100%] text-[#f1f1f1] grid grid-flow-col gap-4 rounded-full bg-[#48637C]">
                 <Image
-                  src={"/defaultpfp.png"}
+                  src={'/defaultpfp.png'}
                   alt="pfp"
                   width={72}
                   height={72}
@@ -32,7 +33,7 @@ const dashboardPage = () => {
                 </h3>
                 <Image
                   className="self-center place-self-start mr-6 hover:border-[1px] border-solid border-[#48637C]"
-                  src={"/copy.svg"}
+                  src={'/copy.svg'}
                   alt="copy"
                   height={24}
                   width={24}
@@ -40,7 +41,7 @@ const dashboardPage = () => {
               </div>
               {/* Totalfunds */}
               <div className="flex flex-col self-center place-self-center">
-                {" "}
+                {' '}
                 <h2 className="text-left text-[27px] mb-[-9px]">
                   Total Funds:
                 </h2>
@@ -54,7 +55,7 @@ const dashboardPage = () => {
             <div className="w-[100%] bg-[linear-gradient(286deg,_#EDFFFB_0%,_#CEEDFF_100%)] rounded-3xl px-4 py-[12px] grid grid-flow-col gap-4 h-fit">
               <Image
                 className="self-center place-self-end"
-                src={"/web.svg"}
+                src={'/web.svg'}
                 alt="web"
                 width={24}
                 height={24}
@@ -66,7 +67,11 @@ const dashboardPage = () => {
             {/* chains and their funds */}
             <div className="w-[288px] grid gap-[16px] overflow-scroll max-h-[413px]">
               {chains.map((chain) => (
-                <ChainFund chain={chain.name} bgCol={chain.bgProp} />
+                <ChainFund
+                  chain={chain.name}
+                  bgCol={chain.bgProp}
+                  key={chain.name}
+                />
               ))}
             </div>
           </div>
@@ -87,7 +92,7 @@ const dashboardPage = () => {
               <h3 className="text-start text-[21px]">Select Network</h3>
               <div className="grid grid-flow-col overflow-x-scroll gap-[8px]">
                 {chains.map((chain) => (
-                  <ChooseChain chain={chain.name} />
+                  <ChooseChain chain={chain.name} key={chain.name} />
                 ))}
               </div>
             </div>
@@ -106,7 +111,7 @@ const dashboardPage = () => {
                     Transfer
                   </h4>
                   <Image
-                    src={"/rocket.svg"}
+                    src={'/rocket.svg'}
                     height={24}
                     width={24}
                     alt="transfer"
@@ -136,7 +141,7 @@ const dashboardPage = () => {
                   {/* chain - subtotal */}
                   <div className="grid gap-2 overflow-y-scroll h-[180px]">
                     {chains.map((chain) => (
-                      <ChainSubtotal chain={chain.name} />
+                      <ChainSubtotal chain={chain.name} key={chain.name} />
                     ))}
                   </div>
                 </div>
@@ -144,7 +149,7 @@ const dashboardPage = () => {
                 <div className="bg-[#CFE3E2] border-[#1c1b1f1b] border-solid border-[1px] rounded-[8px] w-[100%] h-[100%] grid p-s2">
                   <div className="grid grid-flow-col gap-[10px] pb-[16px] self-ends place-self-center">
                     <Image
-                      src={"/logo.svg"}
+                      src={'/logo.svg'}
                       alt="logo"
                       width={30}
                       height={30}
@@ -168,59 +173,4 @@ const dashboardPage = () => {
   );
 };
 
-export default dashboardPage;
-
-const chains = [
-  {
-    name: "ethereum",
-    bgProp: "bg-[98deg,_#9BBFEA_11.35%,_#BBEBFF_88%]",
-  },
-  {
-    name: "polygon",
-    bgProp: "bg-[linear-gradient(82deg,_#DCABFF_0%,_#E4D3FF_100%)]",
-  },
-  {
-    name: "scroll",
-    bgProp: "bg-[linear-gradient(82deg,_#EFC676_0%,_#FCF9AA_100%)]",
-  },
-  {
-    name: "base",
-    bgProp: "bg-[linear-gradient(82deg,_#55C1E3_0%,_#D6FFF5_100%)]",
-  },
-  {
-    name: "celo",
-    bgProp: "bg-[linear-gradient(82deg,_#E2DA18_0%,_#FFEFB8_100%)]",
-  },
-  {
-    name: "optimism",
-    bgProp: "bg-[linear-gradient(82deg,_#FF8693_0%,_#FFE5E8_100%)]",
-  },
-  {
-    name: "arbitrum",
-    bgProp: "bg-[linear-gradient(82deg,_#12AAFF_0%,_#9DCCED_100%)]",
-  },
-  {
-    name: "mantle",
-    bgProp: "bg-[linear-gradient(82deg,_#B8E4B4_0%,_#EAEAEA_100%)]",
-  },
-  {
-    name: "xdc",
-    bgProp: "bg-[linear-gradient(82deg,_#F1F1F1_0%,_#9DDBEF_100%)]",
-  },
-  {
-    name: "zetachain",
-    bgProp: "bg-[linear-gradient(82deg,_#1CAF8A_0%,_#C0FFD2_100%)]",
-  },
-  {
-    name: "linea",
-    bgProp: "bg-[linear-gradient(82deg,_#B6B6B6_0.01%,_#FBFBFB_100%)]",
-  },
-  {
-    name: "okx",
-    bgProp: "bg-[linear-gradient(82deg,_#AAB99B_0.01%,_#D2FFA6_100%)]",
-  },
-  {
-    name: "avalanche",
-    bgProp: "bg-[linear-gradient(82deg,_#BD6F70_0.01%,_#FCC6C7_100%)]",
-  },
-];
+export default DashboardPage;

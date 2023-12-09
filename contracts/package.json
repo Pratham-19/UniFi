@@ -10,6 +10,7 @@
   "dependencies": {
     "@chainlink/contracts": "^0.8.0",
     "@chainlink/contracts-ccip": "^0.7.6",
+    "@hyperlane-xyz/sdk": "^3.3.0",
     "abitype": "^0.9.8",
     "aes-js": "^3.0.0",
     "agentkeepalive": "^4.5.0",

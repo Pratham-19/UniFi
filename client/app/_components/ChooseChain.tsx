@@ -1,19 +1,19 @@
-"use client";
-import Image from "next/image";
-import React, { useState } from "react";
+'use client';
+import Image from 'next/image';
+import React, { useState } from 'react';
 
 const ChooseChain = ({ chain }: any) => {
-  const [style, setStyle] = useState("");
+  const [style, setStyle] = useState('');
   const [clicked, setClicked] = useState(false);
   return (
     <div
-      className={`bg-[#CFE3E2] rounded-[8px] px-[7px] grid w-[70px] h-[70px] hover:border-b-[4px] hover:border-t-[4px] border-[1px] border-solid border-[#2f2f2f] ${style}`}
+      className={`bg-[#CFE3E2] rounded-[8px] px-[7px] grid w-[70px] h-[70px] hover:border-b-[4px] hover:border-t-[4px] border-solid border-[#2f2f2f] ${style} mb-3`}
       onClick={() => {
         if (!clicked) {
-          setStyle("border-b-[4px] border-[2px] bg-[#75c3bf]");
+          setStyle('border-b-[4px] border-[2px] bg-[#75c3bf]');
           setClicked(true);
         } else if (clicked) {
-          setStyle("");
+          setStyle('');
           setClicked(false);
         }
       }}

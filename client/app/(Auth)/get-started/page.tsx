@@ -34,7 +34,7 @@ const GetStartedPage = () => {
     }
     return (
         <>
-            <AuthNavbar address={address} />
+            <AuthNavbar address={address} show={true} />
             <main className="w-screen h-[90vh] bg-[#F1F1F1] grid md:grid-cols-2 grid-flow-row">
                 <div className="md:w-[600px] w-[510px] py-4 flex flex-col justify-center space-y-6 px-[64px] place-self-center">
                     <button

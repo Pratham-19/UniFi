@@ -41,19 +41,20 @@ const LoaderPage = () => {
                             Logging you to UNIFI
                         </h2>
                     </div>
-                    <div className="flex justify-between"></div>
-                    <button
-                        onClick={auth}
-                        className="shadow-[0px_6px_0px_0px_#091D31] h-fit rounded-[8px] px-8 py-3 flex gap-4 justify-center border-[1px] border-solid border-[#091D31] hover:scale-95 transition-transform duration-300"
-                    >
-                        Resend
-                    </button>
-                    <Link
-                        href="/dashboard"
-                        className="shadow-[0px_6px_0px_0px_#091D31] h-fit rounded-[8px] px-8 py-3 flex gap-4 justify-center border-[1px] border-solid border-[#091D31] hover:scale-95 transition-transform duration-300"
-                    >
-                        Resend
-                    </Link>
+                    <div className="flex justify-between space-x-5">
+                        <button
+                            onClick={auth}
+                            className="shadow-[0px_6px_0px_0px_#091D31] h-fit rounded-[8px] px-8 py-3 flex gap-4 justify-center border-[1px] border-solid border-[#091D31] hover:scale-95 transition-transform duration-300"
+                        >
+                            Resend
+                        </button>
+                        <Link
+                            href="/dashboard"
+                            className="shadow-[0px_6px_0px_0px_#091D31] h-fit rounded-[8px] px-8 py-3 flex gap-4 justify-center border-[1px] border-solid border-[#091D31] hover:scale-95 transition-transform duration-300"
+                        >
+                            Skip for now
+                        </Link>
+                    </div>
                 </div>
                 <div className="w-full h-[100%]">
                     <Image

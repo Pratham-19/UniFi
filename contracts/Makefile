@@ -18,7 +18,7 @@ clean  :; forge clean
 # Remove modules
 remove :; rm -rf .gitmodules && rm -rf .git/modules/* && rm -rf lib && touch .gitmodules && git add . && git commit -m "modules"
 
-install :; forge install cyfrin/foundry-devops@0.0.11 --no-commit && forge install foundry-rs/forge-std@v1.5.3 --no-commit && forge install openzeppelin/openzeppelin-contracts@v4.8.2 --no-commit && forge install openzeppelin/openzeppelin-contracts-upgradeable@v4.8.2 --no-commit && npm i
+install :; forge install cyfrin/foundry-devops@0.0.11 --no-commit && forge install foundry-rs/forge-std@v1.5.3 --no-commit && forge install openzeppelin/openzeppelin-contracts@v4.8.2 --no-commit && forge install openzeppelin/openzeppelin-contracts-upgradeable@v4.8.2 --no-commit && forge install vectorized/solady --no-commit && npm i
 
 # Update Dependencies
 update:; forge update
@@ -96,20 +96,53 @@ deployTreasury:
 deployUtils:
 	@forge script script/DeployUtils.s.sol:DeployUtils $(NETWORK_ARGS)
 
+setToolIndexOnUtils:
+	@forge script script/Interactions.s.sol:SetToolIndexOnUtils $(NETWORK_ARGS)
+
+setChainSelectorOnUtils:
+	@forge script script/Interactions.s.sol:SetChainSelectorOnUtils $(NETWORK_ARGS)	
+
+
+
 deployMainContractDeployer:
 	@forge script script/DeployMainContractDeployer.s.sol:DeployMainContractDeployer $(NETWORK_ARGS)
 
+
+setUpDeployer:
+	@forge script script/Interactions.s.sol:SetUpTheDeployer $(NETWORK_ARGS)
+
+setUtilsOnMain:
+	@forge script script/Interactions.s.sol:SetUtilsOnMain $(NETWORK_ARGS)
+
 deployChainlinkCCIP:
 	@forge script script/DeployChainlinkCCIP.s.sol:DeployChainlinkCCIP $(NETWORK_ARGS)
+
+setUtilsOnCCIP:
+	@forge script script/Interactions.s.sol:SetUtilsOnCCIP $(NETWORK_ARGS)
+
+setCCIPGasLimit:
+	@forge script script/Interactions.s.sol:SetCCIPGasLimit $(NETWORK_ARGS)
 
 setChainlinkCCIPOnDeployer:
 	@forge script script/Interactions.s.sol:SetChainlinkCCIPOnDeployer $(NETWORK_ARGS)
 
 startWalletCreation:
-	@forge script script/Interactions.s.sol:StartWalletCreation $(NETWORK_ARGS)
+	@forge script script/Interactions.s.sol:StartWalletCreation $(NETWORK_ARGS) -vvvvv
+
+setToolForChainIdForMainContract:
+	@forge script script/Interactions.s.sol:SetToolForChainIdForMainContract $(NETWORK_ARGS)
+
+setCCIPForMainContract:
+	@forge script script/Interactions.s.sol:SetCCIPForMainContract $(NETWORK_ARGS)
 
 mintUSDCForWallets:
 	@forge script script/Interactions.s.sol:MintUSDCForWallets $(NETWORK_ARGS)
+
+sendMoney:
+	@forge script script/Interactions.s.sol:SendMoney $(NETWORK_ARGS)
+
+deployHyperlaneAPI:
+	@forge script script/DeployHyperlaneAPI.s.sol:DeployHyperlaneAPI $(NETWORK_ARGS)
 	
 
 # Commands for Testnets
@@ -123,17 +156,51 @@ deployTreasuryOnTestnets:
 deployUtilsOnTestnets:
 	make deployUtils ARGS="--network mumbai" && make deployUtils ARGS="--network sepolia"
 
+setToolIndexOnUtilsOnTestnets:
+	make setToolIndexOnUtils ARGS="--network mumbai" && make setToolIndexOnUtils ARGS="--network sepolia"
+
+setChainSelectorOnUtilsOnTestnets:
+	make setChainSelectorOnUtils ARGS="--network mumbai" && make setChainSelectorOnUtils ARGS="--network sepolia"
+
 deployMainContractDeployerOnTestnets:
 	make deployMainContractDeployer ARGS="--network mumbai" && make deployMainContractDeployer ARGS="--network sepolia"
 
+setUpDeployerOnTestnets:
+	make setUpDeployer ARGS="--network mumbai" && make setUpDeployer ARGS="--network sepolia"
+
+
 deployChainlinkCCIPOnTestnets:
 	make deployChainlinkCCIP ARGS="--network mumbai" && make deployChainlinkCCIP ARGS="--network sepolia"
+
+setUtilsOnCCIPOnTestnets:
+	make setUtilsOnCCIP ARGS="--network mumbai" && make setUtilsOnCCIP ARGS="--network sepolia"
+
+setCCIPGasLimitOnTestnets:
+	make setCCIPGasLimit ARGS="--network mumbai" && make setCCIPGasLimit ARGS="--network sepolia"
 
 setChainlinkCCIPOnDeployerOnTestnets:
 	make setChainlinkCCIPOnDeployer ARGS="--network mumbai" && make setChainlinkCCIPOnDeployer ARGS="--network sepolia"
 
 startWalletCreationOnTestnets:
 	make startWalletCreation ARGS="--network mumbai"
+
+
+setUtilsOnMainOnTestnets:
+	make setUtilsOnMain ARGS="--network mumbai" && make setUtilsOnMain ARGS="--network sepolia"
+
+
+
+setToolForChainIdForMainContractOnTestnets:
+	make setToolForChainIdForMainContract ARGS="--network mumbai" && make setToolForChainIdForMainContract ARGS="--network sepolia"
+
+setCCIPForMainContractOnTestnets:
+	make setCCIPForMainContract ARGS="--network mumbai" && make setCCIPForMainContract ARGS="--network sepolia"
 	
 mintUSDCForWalletsOnTestnets:
 	make mintUSDCForWallets ARGS="--network mumbai" && make mintUSDCForWallets ARGS="--network sepolia"
+
+sendMoneyOnTestnets:
+	make sendMoney ARGS="--network mumbai"
+
+deployHyperlaneAPIOnTestnets:
+	make deployHyperlaneAPI ARGS="--network mumbai" && make deployHyperlaneAPI ARGS="--network sepolia"

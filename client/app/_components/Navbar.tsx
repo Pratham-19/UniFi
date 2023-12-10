@@ -19,11 +19,19 @@ const Navbar = () => {
   // });
   // const ens = data.Domain.name;
 
+<<<<<<< HEAD
   // Add to lens
   // const { data, loading, error } = useQuery(GetLensFromAddress, {
   //   resolvedAddress: '0x2acdf6a2f893687ccd341a1ad7e27102b665d8c4'
   // });
   // const lens = data.Socials.Social[0].profileName;
+=======
+  // ADD to LENS
+  const { data, loading, error } = useQuery(GetLensFromAddress, {
+    resolvedAddress: '0x2acdf6a2f893687ccd341a1ad7e27102b665d8c4'
+  });
+  const lens = data?.Socials?.Social[0].profileName;
+>>>>>>> 69d2cac (dashboard related)
   // ens.map((profile: any) => {
   //   console.log(profile.profileImage);
   //   console.log(profile.profileName);
@@ -90,7 +98,11 @@ const Navbar = () => {
               className="self-center place-self-center"
             />
             <h3 className="text-[21px] self-center place-self-center">
+<<<<<<< HEAD
               vitalik.ens
+=======
+              {lens}
+>>>>>>> 69d2cac (dashboard related)
             </h3>
           </div>
           {/* notif */}

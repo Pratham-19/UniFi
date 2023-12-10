@@ -11,7 +11,7 @@ const LoginPage = () => {
         <div className="md:w-[600px] w-[510px] py-4 flex flex-col justify-center items-center gap-4 px-[64px] place-self-center">
           <h1 className="text-[39px] pb-8 font-normal">Login</h1>
           <Link
-            href={'/loader'}
+            href={'/login/loader'}
             className="w-[100%] hover:shadow-[0px_6px_0px_0px_#091D31] h-fit rounded-[8px] px-8 py-3 flex gap-4 justify-center border-[1px] border-solid border-[#091D31] hover:scale-x-95 transition-transform duration-300"
           >
             <Image

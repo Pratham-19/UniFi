@@ -19,11 +19,11 @@ const Navbar = () => {
   // });
   // const ens = data.Domain.name;
 
-  // Add to lens
-  // const { data, loading, error } = useQuery(GetLensFromAddress, {
-  //   resolvedAddress: '0x2acdf6a2f893687ccd341a1ad7e27102b665d8c4'
-  // });
-  // const lens = data.Socials.Social[0].profileName;
+  // ADD to LENS
+  const { data, loading, error } = useQuery(GetLensFromAddress, {
+    resolvedAddress: '0x2acdf6a2f893687ccd341a1ad7e27102b665d8c4'
+  });
+  const lens = data?.Socials?.Social[0].profileName;
   // ens.map((profile: any) => {
   //   console.log(profile.profileImage);
   //   console.log(profile.profileName);
@@ -90,7 +90,7 @@ const Navbar = () => {
               className="self-center place-self-center"
             />
             <h3 className="text-[21px] self-center place-self-center">
-              vitalik.ens
+              {lens}
             </h3>
           </div>
           {/* notif */}
@@ -114,8 +114,8 @@ const Navbar = () => {
                 <div className="grid grid-flow-col text-[#ffffff] gap-1">
                   <Image
                     src={'/bell.svg'}
-                    width={15}
-                    height={15}
+                    width={12}
+                    height={12}
                     alt="updates"
                     className="self-center place-self-start"
                   />

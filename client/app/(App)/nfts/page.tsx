@@ -69,6 +69,7 @@ const MyNftPage = () => {
                                             token.tokenNfts?.contentValue?.image
                                                 ?.large
                                         }
+                                        tokenId={token?.tokenId}
                                     />
                                 )
                             )}
@@ -89,6 +90,7 @@ const MyNftPage = () => {
                                     <Nft
                                         amt={token.amount}
                                         chain={2}
+                                        tokenId={token?.tokenId}
                                         key={token.tokenAddress}
                                         link={`https://opensea.io/assets/polygon/${token.tokenAddress}/${token.tokenId}`}
                                         image={
@@ -114,7 +116,8 @@ const MyNftPage = () => {
                                 }) => (
                                     <Nft
                                         amt={token.amount}
-                                        chain={2}
+                                        chain={1}
+                                        tokenId={token?.tokenId}
                                         key={token.tokenAddress}
                                         link={`https://opensea.io/assets/ethereum/${token.tokenAddress}/${token.tokenId}`}
                                         image={

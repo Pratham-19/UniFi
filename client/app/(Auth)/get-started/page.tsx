@@ -15,7 +15,7 @@ const GetStartedPage = () => {
     if (typeof window === "undefined") return;
 
     async function connectWallet() {
-        if (window.ethereum) {
+        if (window && window.ethereum) {
             try {
                 toast.loading("Connecting to wallet..", {
                     id: "connectWallet",

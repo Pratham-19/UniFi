@@ -9,6 +9,61 @@ import {BasicUSDC} from "../src/BasicUSDC.sol";
 import {MainContract} from "../src/MainContract.sol";
 import {MainContractDeployer} from "../src/MainContractDeployer.sol";
 import {ChainlinkCCIP} from "../src/tools/ChainlinkCCIP.sol";
+import {Utils} from "../src/Utils.sol";
+
+contract SetToolIndexOnUtils is Script {
+    function setToolIndex(address _utils, uint256 _chainId, uint256 _toolIndex) public {
+        Utils utils = Utils(_utils);
+        vm.startBroadcast();
+        utils.setToolIndex(_chainId, _toolIndex);
+        vm.stopBroadcast();
+    }
+
+    function setToolIndexUsingConfigs() public {
+        HelperConfig helperConfig = new HelperConfig();
+        address utils = helperConfig.getUtilsAddress();
+        uint256[] memory supportedChains = helperConfig.getSupportedChainIds();
+        uint256 chainsLength = supportedChains.length;
+
+        for (uint256 i = 0; i < chainsLength; i++) {
+            uint256 chainId = supportedChains[i];
+            uint256 toolIndex = helperConfig.getToolsUsed(chainId);
+
+            setToolIndex(utils, chainId, toolIndex);
+        }
+    }
+
+    function run() public {
+        setToolIndexUsingConfigs();
+    }
+}
+
+contract SetChainSelectorOnUtils is Script {
+    function setChainSelector(address _utils, uint256 _chainId, uint64 _selector) public {
+        Utils utils = Utils(_utils);
+        vm.startBroadcast();
+        utils.setDestinationChainSelector(_chainId, _selector);
+        vm.stopBroadcast();
+    }
+
+    function setChainSelectorUsingConfigs() public {
+        HelperConfig helperConfig = new HelperConfig();
+        address utils = helperConfig.getUtilsAddress();
+        uint256[] memory supportedChains = helperConfig.getSupportedChainIds();
+        uint256 chainsLength = supportedChains.length;
+
+        for (uint256 i = 0; i < chainsLength; i++) {
+            uint256 chainId = supportedChains[i];
+            uint64 selector = helperConfig.getDestinationSelector(chainId);
+
+            setChainSelector(utils, chainId, selector);
+        }
+    }
+
+    function run() public {
+        setChainSelectorUsingConfigs();
+    }
+}
 
 contract SetUtilsOnCCIP is Script {
     function setUtilsCCIP(address _ccip, address _utils) public {
@@ -100,18 +155,18 @@ contract SetUtilsOnDeployer is Script {
 }
 
 contract SetUtilsOnMain is Script {
-    function setUtilsMain(address payable _mainContractDeployer, address _utils) public {
+    function setUtilsMain(address payable _mainContract, address _utils) public {
         vm.startBroadcast();
-        MainContract(_mainContractDeployer).setUtils(_utils);
+        MainContract(_mainContract).setUtils(_utils);
         vm.stopBroadcast();
     }
 
     function setUtilsOnMainUsingConfigs() public {
         HelperConfig helperConfig = new HelperConfig();
-        address mainContractDeployer = helperConfig.getMainContractDeployer();
+        address mainContract = helperConfig.getMainContract();
         address _utils = helperConfig.getUtilsAddress();
 
-        setUtilsMain(payable(mainContractDeployer), _utils);
+        setUtilsMain(payable(mainContract), _utils);
     }
 
     function run() public {
@@ -123,7 +178,7 @@ contract SetUtilsOnMain is Script {
  * @notice MANUALLY CHANGGE THE `mainContractDeployer` ADDRESS
  */
 contract StartWalletCreation is Script {
-    bytes32 public salt = 0x736f78653778567e67326e657700000000000000000000000000000000000000;
+    bytes32 public salt = 0x7364736466617366617366647361667361000000000000000000000000000000;
 
     function startWalletCreation(address payable _mainContractDeployer) public {
         MainContractDeployer mainContractDeployer = MainContractDeployer(_mainContractDeployer);
@@ -146,6 +201,26 @@ contract StartWalletCreation is Script {
     }
 }
 
+contract SetUpTheDeployer is Script {
+    function run() public {
+        HelperConfig helperConfig = new HelperConfig();
+        address ccip = helperConfig.getChainlinkCCIPAddress();
+        address utils = helperConfig.getUtilsAddress();
+        address hyperlaneAPI = helperConfig.getHyperlaneAPI();
+        uint256[] memory supportedChains = helperConfig.getSupportedChainIds();
+
+        MainContractDeployer mainContractDeployer =
+            MainContractDeployer(payable(helperConfig.getMainContractDeployer()));
+
+        vm.startBroadcast();
+        mainContractDeployer.setChainlinkCCIP(payable(ccip));
+        mainContractDeployer.setUtils(utils);
+        mainContractDeployer.setHyperlaneMessageAPI(payable(hyperlaneAPI));
+        mainContractDeployer.setSupportedChainIds(supportedChains);
+        vm.stopBroadcast();
+    }
+}
+
 /**
  * @notice MANUALLY CHANGGE THE `mainContract` ADDRESS
  */
@@ -160,7 +235,7 @@ contract MintUSDCForWallets is Script {
 
     function mintUSDCForWalletsUsingConfigs() public {
         HelperConfig helperConfig = new HelperConfig();
-        (, address usdc,) = helperConfig.activeNetworkConfig();
+        (, address usdc,,) = helperConfig.activeNetworkConfig();
 
         address mainContract = helperConfig.getMainContract();
 

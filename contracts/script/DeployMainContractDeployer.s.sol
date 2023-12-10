@@ -11,7 +11,7 @@ import {HelperConfig} from "./HelperConfig.s.sol";
 import {MainContractDeployer} from "../src/MainContractDeployer.sol";
 
 contract DeployMainContractDeployer is Script {
-    bytes32 public constant SALT = 0x736f6d657468696e67206e657700000000000000000000000000000000000000;
+    bytes32 public constant SALT = 0x736f6d657476476e67698e657700000000000000000000000000000000000000;
 
     function deployMainContractDeployer(bytes memory _bytecode) public {
         vm.startBroadcast();
@@ -22,7 +22,7 @@ contract DeployMainContractDeployer is Script {
 
     function deployMainContractDeployerWithConfigs() public {
         HelperConfig helperConfig = new HelperConfig();
-        (address router, address usdc,) = helperConfig.activeNetworkConfig();
+        (address router, address usdc,,) = helperConfig.activeNetworkConfig();
         address treasury = helperConfig.getLatestTreasuryContract();
 
         bytes memory bytecode = abi.encodePacked(

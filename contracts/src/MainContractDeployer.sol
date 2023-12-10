@@ -28,6 +28,7 @@ import {CREATE3} from "@solady/contracts/utils/Create3.sol";
 import {Utils} from "./Utils.sol";
 import {MainContract} from "./MainContract.sol";
 import {ChainlinkCCIP} from "./tools/ChainlinkCCIP.sol";
+import {HyperlaneMessageAPI} from "./tools/HyperlaneMessageAPI.sol";
 
 import {Client} from "@chainlink/contracts-ccip/src/v0.8/ccip/libraries/Client.sol";
 import {CCIPReceiver} from "@chainlink/contracts-ccip/src/v0.8/ccip/applications/CCIPReceiver.sol";
@@ -63,6 +64,8 @@ contract MainContractDeployer is CCIPReceiver {
         address indexed mainContractAddress, bytes32 indexed messageId
     );
     event MainContractDeployer__MainContractCreated(address indexed mainContractAddress);
+    event MainContractDeployer__RequestReceivedForHyperlane();
+    event MainContractDeployer__SupportedChainsUpdated();
 
     /*
            _        _                         _       _     _
@@ -73,6 +76,7 @@ contract MainContractDeployer is CCIPReceiver {
     */
 
     address payable public s_chainlinkCCIP;
+    address payable public s_hyperlaneMessageAPI;
     address public s_utils;
 
     /**
@@ -91,6 +95,7 @@ contract MainContractDeployer is CCIPReceiver {
     address public immutable i__usdc;
     // Treasury address
     address public immutable i__treasury;
+    // Chainlink CCIP address
 
     /**
      *
@@ -116,9 +121,19 @@ contract MainContractDeployer is CCIPReceiver {
         else s_chainlinkCCIP = _chainlinkCCIP;
     }
 
+    function setHyperlaneMessageAPI(address payable _hyperlaneMessageAPI) external {
+        if (_hyperlaneMessageAPI == address(0)) revert MainContractDeployer__InvalidAddress();
+        else s_hyperlaneMessageAPI = _hyperlaneMessageAPI;
+    }
+
     function setUtils(address _utils) external {
         s_utils = _utils;
         emit MainContractDeployer__UtilsUpdated(_utils);
+    }
+
+    function setSupportedChainIds(uint256[] memory _supportedChainIds) external {
+        s_supportedChainIds = _supportedChainIds;
+        emit MainContractDeployer__SupportedChainsUpdated();
     }
 
     /**
@@ -135,8 +150,12 @@ contract MainContractDeployer is CCIPReceiver {
             uint256 toolUsed = Utils(s_utils).getToolIndex(chainId);
             if (chainId == block.chainid) {
                 _createMainContractOnSameChain(_salt);
-            } else if (block.chainid != chainId && toolUsed == 0) {
+            } else if (toolUsed == 0) {
                 _createMainContractOnDifferentChainUsingChainlink(_salt, chainId);
+            } else if (toolUsed == 1) {
+                _createMainContractOnDifferentChainUsingHyperlane(_salt, chainId);
+            } else {
+                revert MainContractDeployer__InvalidTool();
             }
             unchecked {
                 i++;
@@ -185,6 +204,10 @@ contract MainContractDeployer is CCIPReceiver {
         ChainlinkCCIP(s_chainlinkCCIP).createMainContractOnDifferentChain(_salt, _chainId);
     }
 
+    function _createMainContractOnDifferentChainUsingHyperlane(bytes32 _salt, uint256 _chainId) internal {
+        HyperlaneMessageAPI(s_hyperlaneMessageAPI).createMainContractOnDifferentChain(_salt, _chainId);
+    }
+
     /**
      * This function deploys the MainContract on the same chain as the MainContractDeployer.
      * @param _salt The salt to use for the CREATE3 call
@@ -218,5 +241,15 @@ contract MainContractDeployer is CCIPReceiver {
         emit MainContractDeployer__MainContractCreatedWithMessageId(mainContractAddress, _messageId);
 
         s_mainContracts[msg.sender] = address(mainContractAddress);
+    }
+
+    function handle(uint32 _origin, bytes32 _sender, bytes memory _body) external {
+        (bytes32 salt) = abi.decode(_body, (bytes32));
+        emit MainContractDeployer__RequestReceivedForHyperlane();
+        _createMainContract(salt);
+    }
+
+    function bytes32ToAddress(bytes32 _buf) internal pure returns (address) {
+        return address(uint160(uint256(_buf)));
     }
 }

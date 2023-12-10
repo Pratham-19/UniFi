@@ -20,7 +20,7 @@ contract DeployChainlinkCCIP is Script {
 
     function deployChainlinkCCIPUsingConfigs() public {
         HelperConfig helperConfig = new HelperConfig();
-        (address router,, address link) = helperConfig.activeNetworkConfig();
+        (address router,, address link,) = helperConfig.activeNetworkConfig();
         address factory = helperConfig.getMainContractDeployer();
         bytes memory bytecode = abi.encodePacked(
             type(ChainlinkCCIP).creationCode,

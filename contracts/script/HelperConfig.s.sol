@@ -14,6 +14,7 @@ contract HelperConfig is Script {
         address router;
         address usdc;
         address link;
+        address mailbox;
     }
 
     NetworkConfig public activeNetworkConfig;
@@ -61,7 +62,7 @@ contract HelperConfig is Script {
     }
 
     function getMainContractDeployer() external pure returns (address payable) {
-        return payable(0x89CacFEa8Ac86f75ec5c2e2CE1194a95324138D0);
+        return payable(0x90fE2D28BA67E77Cb336D40dE6B36578A5D943fb);
     }
 
     function getChainlinkCCIPAddress() external pure returns (address) {
@@ -69,18 +70,33 @@ contract HelperConfig is Script {
     }
 
     function getUtilsAddress() external pure returns (address) {
-        return 0xF981f02EDAb3E2EAe03746145b64C85B9eC14Aad;
+        return 0x98A266860D7AE38B41C5834BE62EC195CceAC119;
     }
 
     function getMainContract() external pure returns (address) {
-        return 0x0614267E77EEe72236A91e8e35FbcDF631Abf82d;
+        return 0x383D4c9B2e819509ECe3DDac09824a121A21c16E;
+    }
+
+    function getDestinationSelector(uint256 _chainId) external pure returns (uint64) {
+        if (_chainId == 11155111) {
+            return SEPOLIA_DESTINATION_SELECTOR;
+        } else if (_chainId == 80001) {
+            return MUMBAI_DESTINATION_SELECTOR;
+        } else {
+            revert HelperConfig__InvalidChainId();
+        }
+    }
+
+    function getHyperlaneAPI() external pure returns (address) {
+        return 0x8B2E48150D4dB6B3Af67740E89D26Cc488eac2Ff;
     }
 
     function getSepoliaConfigs() internal pure returns (NetworkConfig memory) {
         return NetworkConfig({
             router: 0xD0daae2231E9CB96b94C8512223533293C3693Bf,
             usdc: 0xf80E7ce8166b91b110FE022326AAdDf7085Bf0B9,
-            link: 0x779877A7B0D9E8603169DdbD7836e478b4624789
+            link: 0x779877A7B0D9E8603169DdbD7836e478b4624789,
+            mailbox: 0xfFAEF09B3cd11D9b20d1a19bECca54EEC2884766
         });
     }
 
@@ -88,7 +104,8 @@ contract HelperConfig is Script {
         return NetworkConfig({
             router: 0x70499c328e1E2a3c41108bd3730F6670a44595D1,
             usdc: 0xf80E7ce8166b91b110FE022326AAdDf7085Bf0B9,
-            link: 0x326C977E6efc84E512bB9C30f76E30c160eD06FB
+            link: 0x326C977E6efc84E512bB9C30f76E30c160eD06FB,
+            mailbox: 0x2d1889fe5B092CD988972261434F7E5f26041115
         });
     }
 }

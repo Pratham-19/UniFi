@@ -74,7 +74,7 @@ contract HelperConfig is Script {
     }
 
     function getMainContract() external pure returns (address) {
-        return 0x383D4c9B2e819509ECe3DDac09824a121A21c16E;
+        return 0xD008E0421627D214962E2d68eD55709A7624d540;
     }
 
     function getDestinationSelector(uint256 _chainId) external pure returns (uint64) {
@@ -108,4 +108,21 @@ contract HelperConfig is Script {
             mailbox: 0x2d1889fe5B092CD988972261434F7E5f26041115
         });
     }
+
+    function getFujiConfigs() internal pure returns (NetworkConfig memory) {
+        return NetworkConfig({
+            router: 0xF694E193200268f9a4868e4Aa017A0118C9a8177,
+            usdc: 0xf80E7ce8166b91b110FE022326AAdDf7085Bf0B9,
+            link: 0x0b9d5D9136855f6FEc3c0993feE6E9CE8a297846,
+            mailbox: 0x5b6CFf85442B851A8e6eaBd2A4E4507B5135B3B0
+        });
+    }
+
+    // function getScrollConfigs() internal pure returns (NetworkConfig memory) {
+    //     return NetworkConfig({
+    //         router:
+    //     });
+    // }
 }
+
+// sepolia, mumbai, scroll, arb, celo,

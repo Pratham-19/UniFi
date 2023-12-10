@@ -142,9 +142,9 @@ contract MainContract is CCIPReceiver {
             uint256 toolIndex = Utils(s_utils).getToolIndex(chainId);
             if (chainId == block.chainid) {
                 if (amount > 0) _sendUSDC(_to, amount);
-            } else if (toolIndex == 0) {
+            } else if (chainId != block.chainid && toolIndex == 0) {
                 ChainlinkCCIP(s_chainlinkCCIP).sendMoneyOnOtherChain(_to, chainId, amount);
-            } else if (toolIndex == 1) {
+            } else if (chainId != block.chainid && toolIndex == 1) {
                 HyperlaneMessageAPI(s_chainlinkCCIP).sendMoneyOnOtherChain(_to, chainId, amount);
             }
 

@@ -8,10 +8,14 @@ const config: Config = {
   ],
   theme: {
     extend: {
-      backgroundImage: {
-        'gradient-radial': 'radial-gradient(var(--tw-gradient-stops))',
-        'gradient-conic':
-          'conic-gradient(from 180deg at 50% 50%, var(--tw-gradient-stops))'
+      fontFamily: {
+        cg_bold: ['ClashGrotesk-Bold'],
+        cg_extralight: ['ClashGrotesk-Extralight'],
+        cg_light: ['ClashGrotesk-light'],
+        cg_reg: ['ClashGrotesk-Regular'],
+        cg_med: ['ClashGrotesk-Medium'],
+        cg_semibold: ['ClashGrotesk-SemiBold'],
+        mar_reg: ['Marcellus']
       }
     }
   },

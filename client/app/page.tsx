@@ -1,113 +1,157 @@
 import Image from 'next/image';
+import Link from 'next/link';
+import LandingNavbar from '@/app/_components/Navbar/LandingNavbar';
 
 export default function Home() {
   return (
-    <main className="flex min-h-screen flex-col items-center justify-between p-24">
-      <div className="z-10 max-w-5xl w-full items-center justify-between font-mono text-sm lg:flex">
-        <p className="fixed left-0 top-0 flex w-full justify-center border-b border-gray-300 bg-gradient-to-b from-zinc-200 pb-6 pt-8 backdrop-blur-2xl dark:border-neutral-800 dark:bg-zinc-800/30 dark:from-inherit lg:static lg:w-auto  lg:rounded-xl lg:border lg:bg-gray-200 lg:p-4 lg:dark:bg-zinc-800/30">
-          Get started by editing&nbsp;
-          <code className="font-mono font-bold">app/page.tsx</code>
-        </p>
-        <div className="fixed bottom-0 left-0 flex h-48 w-full items-end justify-center bg-gradient-to-t from-white via-white dark:from-black dark:via-black lg:static lg:h-auto lg:w-auto lg:bg-none">
-          <a
-            className="pointer-events-none flex place-items-center gap-2 p-8 lg:pointer-events-auto lg:p-0"
-            href="https://vercel.com?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            By{' '}
-            <Image
-              src="/vercel.svg"
-              alt="Vercel Logo"
-              className="dark:invert"
-              width={100}
-              height={24}
-              priority
-            />
-          </a>
-        </div>
-      </div>
-
-      <div className="relative flex place-items-center before:absolute before:h-[300px] before:w-[480px] before:-translate-x-1/2 before:rounded-full before:bg-gradient-radial before:from-white before:to-transparent before:blur-2xl before:content-[''] after:absolute after:-z-20 after:h-[180px] after:w-[240px] after:translate-x-1/3 after:bg-gradient-conic after:from-sky-200 after:via-blue-200 after:blur-2xl after:content-[''] before:dark:bg-gradient-to-br before:dark:from-transparent before:dark:to-blue-700 before:dark:opacity-10 after:dark:from-sky-900 after:dark:via-[#0141ff] after:dark:opacity-40 before:lg:h-[360px] z-[-1]">
+    <main className="flex flex-col items-center justify-center bg-[linear-gradient(299deg,_#FFFCEA_0%,_#FFF8D4_0.01%,_#F8FCFF_100%)] ">
+      <LandingNavbar />
+      <div className="min-h-[80vh] flex flex-row justify-between pt-[40px] z-10">
         <Image
-          className="relative dark:drop-shadow-[0_0_0.3rem_#ffffff70] dark:invert"
-          src="/next.svg"
-          alt="Next.js Logo"
-          width={180}
-          height={37}
-          priority
+          src={'/mainLanding/landing-boxleft.png'}
+          alt="coin input"
+          width={712}
+          height={964}
+          quality={100}
+          className="absolute left-0 w-[25vw] "
+        />
+        <div className="flex flex-col justify-start items-center z-20 pt-12 space-y-3">
+          <h3 className="text-[39px] text-center font-normal">
+            transferring cross-chain simplified
+          </h3>
+          <h1 className="text-[66px] font-bold text-center">
+            ONE CLICK TRANSFERS
+          </h1>
+          <Link
+            href="/get-started"
+            className="shadow-md  h-fit rounded-[8px] px-12 py-3 flex gap-4 justify-center items-center border-[1px] border-solid border-[#091D31] border-b-[6px] hover:border-b-4 transition-transform duration-300 hover:scale-95 bg-[#f1f1f1]"
+          >
+            <Image
+              src={'/blender.svg'}
+              alt="blender"
+              height={30}
+              width={30}
+              className="self-center w-6 h-6"
+            />
+            <h2 className="text-lg">Start Transfering</h2>
+          </Link>
+        </div>
+        <Image
+          src={'/mainLanding/landing-boxright.png'}
+          alt="coin input"
+          width={940}
+          height={980}
+          className="absolute right-0 w-[32vw]"
         />
       </div>
 
-      <div className="mb-32 grid text-center lg:max-w-5xl lg:w-full lg:mb-0 lg:grid-cols-4 lg:text-left">
-        <a
-          href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          className="group rounded-lg border border-transparent px-5 py-4 transition-colors hover:border-gray-300 hover:bg-gray-100 hover:dark:border-neutral-700 hover:dark:bg-neutral-800/30"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2 className={`mb-3 text-2xl font-semibold`}>
-            Docs{' '}
-            <span className="inline-block transition-transform group-hover:translate-x-1 motion-reduce:transform-none">
-              -&gt;
-            </span>
-          </h2>
-          <p className={`m-0 max-w-[30ch] text-sm opacity-50`}>
-            Find in-depth information about Next.js features and API.
-          </p>
-        </a>
-
-        <a
-          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          className="group rounded-lg border border-transparent px-5 py-4 transition-colors hover:border-gray-300 hover:bg-gray-100 hover:dark:border-neutral-700 hover:dark:bg-neutral-800/30"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2 className={`mb-3 text-2xl font-semibold`}>
-            Learn{' '}
-            <span className="inline-block transition-transform group-hover:translate-x-1 motion-reduce:transform-none">
-              -&gt;
-            </span>
-          </h2>
-          <p className={`m-0 max-w-[30ch] text-sm opacity-50`}>
-            Learn about Next.js in an interactive course with&nbsp;quizzes!
-          </p>
-        </a>
-
-        <a
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          className="group rounded-lg border border-transparent px-5 py-4 transition-colors hover:border-gray-300 hover:bg-gray-100 hover:dark:border-neutral-700 hover:dark:bg-neutral-800/30"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2 className={`mb-3 text-2xl font-semibold`}>
-            Templates{' '}
-            <span className="inline-block transition-transform group-hover:translate-x-1 motion-reduce:transform-none">
-              -&gt;
-            </span>
-          </h2>
-          <p className={`m-0 max-w-[30ch] text-sm opacity-50`}>
-            Explore starter templates for Next.js.
-          </p>
-        </a>
-
-        <a
-          href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          className="group rounded-lg border border-transparent px-5 py-4 transition-colors hover:border-gray-300 hover:bg-gray-100 hover:dark:border-neutral-700 hover:dark:bg-neutral-800/30"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2 className={`mb-3 text-2xl font-semibold`}>
-            Deploy{' '}
-            <span className="inline-block transition-transform group-hover:translate-x-1 motion-reduce:transform-none">
-              -&gt;
-            </span>
-          </h2>
-          <p className={`m-0 max-w-[30ch] text-sm opacity-50`}>
-            Instantly deploy your Next.js site to a shareable URL with Vercel.
-          </p>
-        </a>
+      <Image
+        src={'/mainLanding/landing-nettop.png'}
+        width={1200}
+        height={900}
+        alt="bg"
+        className="absolute top-0 opacity-75 w-full"
+        aria-hidden="true"
+      />
+      <div className="bg-[#091D31] px-16 flex w-full pt-8 justify-around z-10">
+        <Image
+          src={'/mainLanding/landing-boxes.png'}
+          alt="lanign"
+          height={400}
+          width={270}
+          className="rounded-[16px] w-[30vw]"
+        />
+        <div className="flex flex-col gap-6 px-16 self-center items-center justify-centers">
+          <h1 className="text-[45px] text-[#ffffff] font-semibold text-center">
+            Transfer between any chain.
+          </h1>
+          <div className="flex flex-row justify-center items-center gap-4 font-semibold">
+            <div className="rounded-full w-fit border-solid border-[1px] border-[#ffffff] px-4 py-1 flex justify-center items-center gap-[10px]">
+              <Image
+                src={'/mainLanding/icon-people.png'}
+                alt="landing"
+                height={24}
+                width={61}
+                className="max-h-[24px] min-w-[61]"
+              />
+              <h4 className="text-[21px] text-[#ffffff] ">To anyone</h4>
+            </div>
+            <div className="rounded-full w-fit border-solid border-[1px] border-[#ffffff] px-4 py-1 flex gap-[10px]">
+              <Image
+                src={'/mainLanding/icon-globe.svg'}
+                alt="landing"
+                height={30}
+                width={30}
+                className=""
+              />
+              <h4 className="text-[21px] text-[#ffffff] ">Anywhere</h4>
+            </div>
+            <div className="rounded-full w-fit border-solid border-[1px] border-[#ffffff] px-4 py-1 flex gap-[10px]">
+              <Image
+                src={'/mainLanding/icon-time.svg'}
+                alt="landing"
+                height={24}
+                width={33}
+                className=""
+              />
+              <h4 className="text-[21px] text-[#ffffff] ">At Anytime</h4>
+            </div>
+          </div>
+        </div>
       </div>
+      <div className="flex flex-row gap-[24px] py-[48px] font-semibold px-6 z-10">
+        <div className="flex pr-8 gap-6 rounded-[32px] bg-[radial-gradient(1508.38%_141.42%_at_0%_100%,_#D2FFA6_0%,_rgba(210,_255,_166,_0.20)_100%)]">
+          <Image
+            src={'/mainLanding/wallet.png'}
+            alt="wallet"
+            width={280}
+            height={200}
+            quality={100}
+            className="h-[90%] self-end"
+          />
+          <div className="py-12 self-center">
+            <h5 className="text-[24px]">Experience the power of</h5>
+            <h3 className="text-[39px] leading-10">Smart wallets</h3>
+          </div>
+        </div>
+        <div className="flex pr-8 gap-4 rounded-[32px] bg-[radial-gradient(1508.38%_141.42%_at_0%_100%,_#D8A6FF_0%,_rgba(216,_166,_255,_0.20)_100%)]">
+          <Image
+            src={'/mainLanding/landing-ethusd.png'}
+            alt="wallet"
+            width={280}
+            height={200}
+            quality={100}
+            className="h-[90%] self-end"
+          />
+          <div className="py-12 self-center">
+            <h5 className="text-[24px]">Start transferring</h5>
+            <h3 className="text-[39px] leading-10">Between chains</h3>
+          </div>
+        </div>
+      </div>
+      <div className="flex flex-col gap-[10px] z-10 mt-12">
+        <div className="flex flex-col justify-center items-center text-center">
+          <h3 className="text-[40px] font-normal">
+            Time to chill and stop worrying
+          </h3>
+          <h1 className="text-[80px] font-cg_bold">SOCIAL RECOVERY</h1>
+          <h3 className="text-[40px] font-normal">for your wallet and funds</h3>
+        </div>
+        <Image
+          src={'/mainLanding/shaking-hands.png'}
+          alt="hanshake"
+          height={500}
+          width={666}
+          className="self-center"
+        />
+      </div>
+      <Image
+        src={'/mainLanding/landing-netbtm.png'}
+        alt="bg"
+        height={900}
+        width={1200}
+        className="absolute pt-[1200px] opacity-50 self-end z-0 w-full"
+      />
     </main>
   );
 }

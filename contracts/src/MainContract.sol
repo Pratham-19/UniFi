@@ -22,7 +22,7 @@
 // internal & private view & pure functions
 // external & public view & pure functions
 
-pragma solidity 0.8.19;
+pragma solidity 0.8.20;
 
 import {Utils} from "./Utils.sol";
 import {Treasury} from "./Treasury.sol";

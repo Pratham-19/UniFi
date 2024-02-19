@@ -1,10 +1,10 @@
 //SPDX-License-Identifier: MIT
-pragma solidity 0.8.19;
+pragma solidity 0.8.20;
 
 import {Script} from "forge-std/Script.sol";
 import {HyperlaneMessageAPI} from "../src/tools/HyperlaneMessageAPI.sol";
 import {HelperConfig} from "./HelperConfig.s.sol";
-import {CREATE3} from "@solady/contracts/utils/Create3.sol";
+import {CREATE3} from "@solmate/contracts/utils/Create3.sol";
 
 contract DeployHyperlaneAPI is Script {
     bytes32 public constant SALT = 0x726f6d657468696e67206e887700000000000000000000000000000000000000;

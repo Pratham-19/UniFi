@@ -21,9 +21,9 @@
 // private
 // internal & private view & pure functions
 // external & public view & pure functions
-pragma solidity 0.8.19;
+pragma solidity 0.8.20;
 
-import {CREATE3} from "@solady/contracts/utils/Create3.sol";
+import {CREATE3} from "@solmate/contracts/utils/Create3.sol";
 
 import {Utils} from "./Utils.sol";
 import {MainContract} from "./MainContract.sol";
